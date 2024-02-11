@@ -5,15 +5,31 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+/**
+ * @author          - Christian E. Anderson
+ * @teammate        - Crosby White & Matthew Williams
+ * @version         - 16-FEB-2024
+ *
+ *      This file defines the save screen for the Drawing App.
+ */
 
+/**
+ *
+ */
 class SaveScreen : Fragment() {
 
+    /**
+     *
+     */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
         }
     }
 
+    /**
+     *
+     */
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
