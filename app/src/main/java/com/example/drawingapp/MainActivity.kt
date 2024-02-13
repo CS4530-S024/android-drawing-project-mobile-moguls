@@ -1,7 +1,10 @@
 package com.example.drawingapp
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
+import androidx.appcompat.app.AppCompatActivity
+import com.example.drawingapp.databinding.ActivityMainBinding
+
 /**
  * @author          - Christian E. Anderson
  * @teammate        - Crosby White & Matthew Williams
