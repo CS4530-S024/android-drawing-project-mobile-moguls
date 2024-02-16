@@ -13,7 +13,8 @@
         <com.example.drawingapp.DrawingView
             android:id="@+id/view"
             android:layout_width="400dp"
-            android:layout_height="400dp" />
+            android:layout_height="400dp"
+            android:layout_gravity="center_horizontal" />
 
         <TextView
             android:id="@+id/textView2"
@@ -22,16 +23,16 @@
             android:text="This is the Draw Screen" />
 
         <Button
-            android:id="@+id/saveScreenButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Go to Save Screen" />
-
-        <Button
             android:id="@+id/mainScreenButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Go to Main Screen" />
+
+        <Button
+            android:id="@+id/saveScreenButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Go to Save Screen" />
 
     </LinearLayout>
 </FrameLayout>

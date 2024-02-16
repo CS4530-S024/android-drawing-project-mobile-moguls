@@ -25,7 +25,9 @@ class DrawingView(context: Context, attrs: AttributeSet) : View(context, attrs) 
 
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
-        Log.e("Debug", width.toString())
+        Log.e("View width", width.toString())
+        Log.e("View height", height.toString())
+
         canvas.drawBitmap(drawingBitmap, srcRect, destRect, paint)
     }
 
@@ -42,6 +44,14 @@ class DrawingView(context: Context, attrs: AttributeSet) : View(context, attrs) 
         paint.strokeWidth = 4F
         canvas.drawCircle(drawingOffset, 100F, 60F, paint)
         drawingOffset += 70F
+        invalidate()
+    }
+
+    fun draw(x: Float, y: Float) {
+        paint.color = Color.RED
+        paint.strokeWidth = 4F
+        canvas.drawCircle(x + drawingOffset, y, 10F, paint)
+        drawingOffset = 50F
         invalidate()
     }
 
