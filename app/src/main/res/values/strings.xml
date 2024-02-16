@@ -7,4 +7,7 @@
     <string name="start_drawing">Start Drawing</string>
     <string name="mobile_moguels_2024_v_0_0_15">© Mobile Moguels 2024 - V.0.0.15</string>
     <string name="mobile_moguels_company_logo">Mobile Moguels Company Logo</string>
+    <string name="small">Small</string>
+    <string name="medium">Medium</string>
+    <string name="large">Large</string>
 </resources>
