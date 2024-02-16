@@ -9,19 +9,21 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        tools:ignore="UselessParent">
 
         <ImageView
             android:id="@+id/imageView"
             android:layout_width="match_parent"
             android:layout_height="334dp"
-            app:srcCompat="@drawable/company_logo"/>
+            android:contentDescription="@string/mobile_moguels_company_logo"
+            app:srcCompat="@drawable/company_logo" />
 
         <TextView
             android:id="@+id/splashTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Mobile Moguel's Drawing App"
+            android:text="@string/mobile_moguel_s_drawing_app"
             android:textAlignment="center"
             android:textAllCaps="false"
             android:textSize="48sp" />
@@ -36,32 +38,30 @@
             android:orientation="horizontal">
 
             <Button
-                android:id="@+id/mainScreenButton"
+                android:id="@+id/drawScreenButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Go to Main Screen" />
+                android:text="@string/start_drawing" />
 
             <Space
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1" />
 
             <Button
-                android:id="@+id/drawScreenButton"
+                android:id="@+id/mainScreenButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Go to Draw Screen" />
-
+                android:text="@string/check_out_the_art_gallery" />
         </LinearLayout>
 
         <TextView
             android:id="@+id/textView3"
             android:layout_width="wrap_content"
-            android:layout_height="32dp"
+            android:layout_height="0dp"
             android:layout_weight="1"
-            android:text="© Mobile Moguels 2024 - V.0.0.15"
+            android:text="@string/mobile_moguels_2024_v_0_0_15"
             android:textSize="14sp"
             android:textStyle="italic" />
-
     </LinearLayout>
 </FrameLayout>

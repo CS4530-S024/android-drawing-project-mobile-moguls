@@ -1,5 +1,6 @@
 package com.example.drawingapp
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -20,6 +21,7 @@ import com.example.drawingapp.databinding.FragmentSplashScreenBinding
 /**
  *
  */
+@SuppressLint("CustomSplashScreen")
 class SplashScreen : Fragment() {
     /**
      *
