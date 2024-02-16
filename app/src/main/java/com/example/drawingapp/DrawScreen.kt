@@ -27,7 +27,7 @@ import com.example.drawingapp.databinding.FragmentDrawScreenBinding
  */
 class DrawScreen : Fragment() {
 
-    val viewModel : ViewModel by activityViewModels()
+    private val viewModel : ViewModel by activityViewModels()
 
     private var canvas = Canvas()
 

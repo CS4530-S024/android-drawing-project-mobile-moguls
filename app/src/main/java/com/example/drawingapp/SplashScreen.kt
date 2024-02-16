@@ -42,12 +42,6 @@ class SplashScreen : Fragment() {
             Log.d("SPLASH", "navigating to draw screen")
             findNavController().navigate(R.id.action_splashScreen_to_drawScreen2)
         }
-
-        // Switch to save screen
-        binding.saveScreenButton.setOnClickListener {
-            Log.d("SPLASH", "navigating to save screen")
-            findNavController().navigate(R.id.action_splashScreen_to_saveScreen2)
-        }
         return binding.root
     }
 }

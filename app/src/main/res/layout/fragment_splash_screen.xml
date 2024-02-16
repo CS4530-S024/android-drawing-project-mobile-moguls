@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -10,28 +11,57 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="match_parent"
+            android:layout_height="334dp"
+            app:srcCompat="@drawable/company_logo"/>
+
         <TextView
             android:id="@+id/splashTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="This is the splash screen" />
+            android:text="Mobile Moguel's Drawing App"
+            android:textAlignment="center"
+            android:textAllCaps="false"
+            android:textSize="48sp" />
 
-        <Button
-            android:id="@+id/mainScreenButton"
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="202dp" />
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Go to Main Screen" />
+            android:orientation="horizontal">
 
-        <Button
-            android:id="@+id/drawScreenButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Go to Draw Screen" />
+            <Button
+                android:id="@+id/mainScreenButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Go to Main Screen" />
 
-        <Button
-            android:id="@+id/saveScreenButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Go to Save Screen" />
+            <Space
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+
+            <Button
+                android:id="@+id/drawScreenButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Go to Draw Screen" />
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="wrap_content"
+            android:layout_height="32dp"
+            android:layout_weight="1"
+            android:text="© Mobile Moguels 2024 - V.0.0.15"
+            android:textSize="14sp"
+            android:textStyle="italic" />
+
     </LinearLayout>
 </FrameLayout>
