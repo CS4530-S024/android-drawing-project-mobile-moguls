@@ -4,10 +4,6 @@ import android.os.Bundle
 import android.util.Log
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.setFragmentResult
-import com.example.drawingapp.databinding.ActivityMainBinding
-import com.example.drawingapp.databinding.FragmentDrawScreenBinding
 
 /**
  * @author          - Christian E. Anderson
@@ -17,9 +13,6 @@ import com.example.drawingapp.databinding.FragmentDrawScreenBinding
  *      This file defines the main activity for the Drawing App.
  */
 
-/**
- *
- */
 class MainActivity : AppCompatActivity() {
 
     /**
@@ -28,7 +21,11 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
-        val myViewModel : ViewModel by viewModels()
+        val myViewModel : MyViewModel by viewModels()
+
+        myViewModel.bitmap.observe(this) {
+            Log.e("Debug", "Bitmap changed!")
+        }
 
         setContentView(R.layout.activity_main)
     }

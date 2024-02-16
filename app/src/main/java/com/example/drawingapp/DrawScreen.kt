@@ -27,7 +27,7 @@ import com.example.drawingapp.databinding.FragmentDrawScreenBinding
  */
 class DrawScreen : Fragment() {
 
-    private val viewModel : ViewModel by activityViewModels()
+    private val viewModel : MyViewModel by activityViewModels()
 
     private var canvas = Canvas()
 
@@ -41,7 +41,7 @@ class DrawScreen : Fragment() {
 
         val binding = FragmentDrawScreenBinding.inflate(inflater)
 
-        binding.view.setBitmap(viewModel.bitmap)
+        binding.view.setBitmap(viewModel.bitmap.value!!)
         canvas = binding.view.canvas
 
         val paint = Paint()
@@ -51,6 +51,7 @@ class DrawScreen : Fragment() {
 
         binding.view.setOnClickListener {
             binding.view.drawCircle()
+            Log.e("Debug", "Drawing circle!")
         }
 
         // Switch to main screen
@@ -69,9 +70,5 @@ class DrawScreen : Fragment() {
     }
 
     
-
-}
-
-private fun View.onGenericMotionEvent(function: () -> Unit) {
 
 }

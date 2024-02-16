@@ -1,7 +1,7 @@
 package com.example.drawingapp
 
 import android.graphics.Bitmap
-import androidx.core.graphics.set
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 
@@ -16,11 +16,12 @@ import androidx.lifecycle.ViewModel
 /**
  *
  */
-class ViewModel : ViewModel() {
+class MyViewModel : ViewModel() {
 
-    private val _bitmap : MutableLiveData<Bitmap> = MutableLiveData(Bitmap.createBitmap(1, 1, Bitmap.Config.ARGB_8888))
-
-    var bitmap = Bitmap.createBitmap(128, 128, Bitmap.Config.ARGB_8888)
+    private val _bitmap : MutableLiveData<Bitmap> = MutableLiveData(
+        Bitmap.createBitmap(500, 500, Bitmap.Config.ARGB_8888)
+    )
+    val bitmap = _bitmap as LiveData<Bitmap>
 
 
 }
