@@ -61,4 +61,7 @@ dependencies {
 
     // fragment stuff
     implementation("androidx.fragment:fragment-ktx:1.6.2")
+
+    // Color Picker Import
+    implementation("com.github.skydoves:colorpickerview:2.3.0")
 }

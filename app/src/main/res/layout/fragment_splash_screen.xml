@@ -9,6 +9,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="#F2E3FF"
         android:orientation="vertical"
         tools:ignore="UselessParent">
 
@@ -23,6 +24,7 @@
             android:id="@+id/splashTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
             android:text="@string/mobile_moguel_s_drawing_app"
             android:textAlignment="center"
             android:textAllCaps="false"
@@ -30,17 +32,19 @@
 
         <Space
             android:layout_width="match_parent"
-            android:layout_height="202dp" />
+            android:layout_height="150dp" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
             android:orientation="horizontal">
 
             <Button
                 android:id="@+id/drawScreenButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
                 android:text="@string/start_drawing" />
 
             <Space
@@ -52,14 +56,15 @@
                 android:id="@+id/mainScreenButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
                 android:text="@string/check_out_the_art_gallery" />
         </LinearLayout>
 
         <TextView
             android:id="@+id/textView3"
             android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
             android:text="@string/mobile_moguels_2024_v_0_0_15"
             android:textSize="14sp"
             android:textStyle="italic" />
