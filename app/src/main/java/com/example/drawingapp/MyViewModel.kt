@@ -13,8 +13,12 @@ import androidx.lifecycle.ViewModel
  *      This file defines the view model for the Drawing App.
  */
 
-enum class PenSize(val circleSize: Float) {
+enum class PenSize(val penSize: Float) {
     Small(6F), Medium(12F), Large(20F), ExtraLarge(50F)
+}
+
+enum class PenShape(val penShape: Int) {
+    Circle(1), Oval(2)
 }
 
 /**
@@ -31,6 +35,12 @@ class MyViewModel : ViewModel() {
         PenSize.Medium
     )
     var penSize = _penSize as LiveData<PenSize>
+
+    private var _penShape : MutableLiveData<PenShape> = MutableLiveData(
+        PenShape.Circle
+    )
+
+    var penShape = _penShape as LiveData<PenShape>
 
     fun setPenSize(newSize: PenSize) {
         _penSize.value = newSize

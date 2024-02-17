@@ -36,10 +36,12 @@ class DrawingView(context: Context, attrs: AttributeSet) : View(context, attrs) 
         invalidate()
     }
 
-    fun draw(x: Float, y: Float, size: Float) {
+    fun draw(x: Float, y: Float, size: Float, shape: Int) {
         paint.color = Color.RED
         paint.strokeWidth = 3F
-        canvas.drawCircle(x, y, size, paint)
+        when (shape) {
+            1 -> canvas.drawCircle(x, y, size, paint)
+        }
         invalidate()
     }
 

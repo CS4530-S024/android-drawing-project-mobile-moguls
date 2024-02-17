@@ -2,8 +2,6 @@ package com.example.drawingapp
 
 import android.annotation.SuppressLint
 import android.graphics.Canvas
-import android.graphics.Color
-import android.graphics.Paint
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -50,7 +48,7 @@ class DrawScreen : Fragment() {
             if (event.action == MotionEvent.ACTION_DOWN || event.action == MotionEvent.ACTION_MOVE) {
                 val location = IntArray(2)
                 v.getLocationOnScreen(location)
-                binding.view.draw(event.x / 2.8f, event.y / 2.8f, viewModel.penSize.value!!.circleSize)
+                binding.view.draw(event.x / 2.8f, event.y / 2.8f, viewModel.penSize.value!!.penSize, viewModel.penShape.value!!.penShape)
             }
             true
         }
