@@ -26,20 +26,19 @@ enum class PenShape() {
  */
 class MyViewModel : ViewModel() {
 
-    private val _bitmap : MutableLiveData<Bitmap> = MutableLiveData(
+    private val _bitmap: MutableLiveData<Bitmap> = MutableLiveData(
         Bitmap.createBitmap(500, 500, Bitmap.Config.ARGB_8888)
     )
     val bitmap = _bitmap as LiveData<Bitmap>
 
-    private var _penSize : MutableLiveData<PenSize> = MutableLiveData(
+    private var _penSize: MutableLiveData<PenSize> = MutableLiveData(
         PenSize.Medium
     )
     var penSize = _penSize as LiveData<PenSize>
 
-    private var _penShape : MutableLiveData<PenShape> = MutableLiveData(
+    private var _penShape: MutableLiveData<PenShape> = MutableLiveData(
         PenShape.Circle
     )
-
     var penShape = _penShape as LiveData<PenShape>
 
     fun setPenSize(newSize: PenSize) {
@@ -49,6 +48,4 @@ class MyViewModel : ViewModel() {
     fun setPenShape(newShape: PenShape) {
         _penShape.value = newShape
     }
-
-
 }
