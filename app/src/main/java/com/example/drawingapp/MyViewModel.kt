@@ -4,6 +4,7 @@ import android.graphics.Bitmap
 import android.graphics.Color
 import android.os.Build
 import androidx.annotation.RequiresApi
+import androidx.core.graphics.toColor
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -23,6 +24,7 @@ enum class PenSize(val penSize: Float) {
 enum class PenShape {
     Circle, Oval, Square
 }
+
 
 /**
  *
@@ -55,6 +57,10 @@ class MyViewModel : ViewModel() {
 
     fun setPenShape(newShape: PenShape) {
         _penShape.value = newShape
+    }
+
+    fun setPenColor(newColor: Color) {
+        _penColor.value = newColor
     }
 
 

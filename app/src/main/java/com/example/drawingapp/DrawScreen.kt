@@ -9,10 +9,14 @@ import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
+import androidx.core.graphics.toColor
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.example.drawingapp.databinding.FragmentDrawScreenBinding
+import com.skydoves.colorpickerview.ColorEnvelope
+import com.skydoves.colorpickerview.listeners.ColorListener
 
 
 /**
@@ -46,7 +50,7 @@ class DrawScreen : Fragment() {
         binding.view.setOnTouchListener { _, event ->
             if (event.action == MotionEvent.ACTION_DOWN || event.action == MotionEvent.ACTION_MOVE) {
                 drawOnCustomView(event.x / touchCoordinateScalar, event.y / touchCoordinateScalar,
-                    viewModel.penSize.value!!.penSize, viewModel.penShape.value!!)
+                    viewModel.penSize.value!!.penSize, viewModel.penShape.value!!, viewModel.penColor.value!!)
             }
             true
         }
@@ -67,8 +71,17 @@ class DrawScreen : Fragment() {
         binding.largeBrushButton.setOnClickListener { viewModel.setPenSize(PenSize.Large) }
         // Listeners for pen shape buttons
         binding.circleShapeButton.setOnClickListener { viewModel.setPenShape(PenShape.Circle) }
-        binding.ovalShapeButton.setOnClickListener { viewModel.setPenShape(PenShape.Oval) }
+        binding.ovalShapeButton.setOnClickListener {
+            viewModel.setPenShape(PenShape.Oval) }
         binding.squareShapeButton.setOnClickListener { viewModel.setPenShape(PenShape.Square) }
+
+        binding.colorPickerView.setColorListener(object : ColorListener {
+
+            override fun onColorSelected(color: Int, fromUser: Boolean) {
+                viewModel.setPenColor(color.toColor())
+
+            }
+        })
 
         return binding.root
     }
@@ -77,7 +90,7 @@ class DrawScreen : Fragment() {
         super.onViewCreated(view, savedInstanceState)
     }
 
-    private fun drawOnCustomView(xIn: Float, yIn: Float, size: Float, shape: PenShape) {
+    private fun drawOnCustomView(xIn: Float, yIn: Float, size: Float, shape: PenShape, color: Color) {
         // Reassign so that we can optionally adjust in the if block below
         var x: Float = xIn
         var y: Float = yIn
@@ -94,7 +107,7 @@ class DrawScreen : Fragment() {
         val viewCanvas = binding.view.canvas
         val viewPaint = Paint()
 
-        viewPaint.color = Color.RED
+        viewPaint.color = color.toArgb()
         viewPaint.strokeWidth = 3F
         val halfSize: Float = size/2f
         val ovalStretch = 2f
