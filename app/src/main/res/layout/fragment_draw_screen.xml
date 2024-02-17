@@ -33,10 +33,11 @@
                     android:text="Small" />
 
                 <RadioButton
-                    android:id="@+id/medimBrushButton"
+                    android:id="@+id/mediumBrushButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Medium" />
+                    android:text="Medium"
+                    android:checked="true" />
 
                 <RadioButton
                     android:id="@+id/largeBrushButton"

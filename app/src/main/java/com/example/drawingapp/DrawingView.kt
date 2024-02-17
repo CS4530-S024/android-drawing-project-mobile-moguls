@@ -20,9 +20,6 @@ class DrawingView(context: Context, attrs: AttributeSet) : View(context, attrs) 
     private var destRect : Rect = Rect(0, 0, 1400, 1400)
     private val srcRect : Rect = Rect(0, 0, 500, 500)
 
-    // Temp
-    private var drawingOffset: Float = 50F
-
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
         Log.e("View width", width.toString())
@@ -39,19 +36,10 @@ class DrawingView(context: Context, attrs: AttributeSet) : View(context, attrs) 
         invalidate()
     }
 
-    fun drawCircle() {
+    fun draw(x: Float, y: Float, size: Float) {
         paint.color = Color.RED
-        paint.strokeWidth = 4F
-        canvas.drawCircle(drawingOffset, 100F, 60F, paint)
-        drawingOffset += 70F
-        invalidate()
-    }
-
-    fun draw(x: Float, y: Float) {
-        paint.color = Color.RED
-        paint.strokeWidth = 4F
-        canvas.drawCircle(x + drawingOffset, y, 10F, paint)
-        drawingOffset = 50F
+        paint.strokeWidth = 3F
+        canvas.drawCircle(x, y, size, paint)
         invalidate()
     }
 

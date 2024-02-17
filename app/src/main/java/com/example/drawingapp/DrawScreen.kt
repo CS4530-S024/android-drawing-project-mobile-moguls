@@ -30,7 +30,6 @@ import com.example.drawingapp.databinding.FragmentDrawScreenBinding
 class DrawScreen : Fragment() {
 
     private val viewModel : MyViewModel by activityViewModels()
-
     private var canvas = Canvas()
 
     /**
@@ -40,33 +39,18 @@ class DrawScreen : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
 
         val binding = FragmentDrawScreenBinding.inflate(inflater)
 
         binding.view.setBitmap(viewModel.bitmap.value!!)
         canvas = binding.view.canvas
 
-//        binding.view.setOnClickListener {
-//            binding.view.drawCircle()
-//            Log.e("Debug", "Drawing circle!")
-//        }
-
         binding.view.setOnTouchListener { v, event ->
             if (event.action == MotionEvent.ACTION_DOWN || event.action == MotionEvent.ACTION_MOVE) {
                 val location = IntArray(2)
                 v.getLocationOnScreen(location)
-                var x = event.x.toFloat()
-                Log.e("Def X", x.toString())
-                x /= 2.75f
-                x -= location[0]
-                Log.e("X", x.toString())
-                var y = event.y.toFloat()
-                Log.e("Def Y", y.toString())
-                y /= 2.75f
-                x -= location[1]
-                Log.e("Y", y.toString())
-                binding.view.draw(x,y)
+                binding.view.draw(event.x / 2.8f, event.y / 2.8f, viewModel.penSize.value!!.circleSize)
             }
             true
         }
@@ -81,6 +65,17 @@ class DrawScreen : Fragment() {
         binding.saveScreenButton.setOnClickListener {
             Log.d("SPLASH", "navigating to save screen")
             findNavController().navigate(R.id.action_drawScreen2_to_saveScreen2)
+        }
+
+        // Listeners for pen size buttons
+        binding.smallBrushButton.setOnClickListener {
+            viewModel.setPenSize(PenSize.Small)
+        }
+        binding.mediumBrushButton.setOnClickListener {
+            viewModel.setPenSize(PenSize.Medium)
+        }
+        binding.largeBrushButton.setOnClickListener {
+            viewModel.setPenSize(PenSize.Large)
         }
 
         return binding.root
