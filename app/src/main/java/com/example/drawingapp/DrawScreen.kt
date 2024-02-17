@@ -1,12 +1,10 @@
 package com.example.drawingapp
 
 import android.annotation.SuppressLint
-import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.RectF
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
@@ -71,7 +69,6 @@ class DrawScreen : Fragment() {
         binding.circleShapeButton.setOnClickListener { viewModel.setPenShape(PenShape.Circle) }
         binding.ovalShapeButton.setOnClickListener { viewModel.setPenShape(PenShape.Oval) }
         binding.squareShapeButton.setOnClickListener { viewModel.setPenShape(PenShape.Square) }
-        binding.starShapeButton.setOnClickListener { viewModel.setPenShape(PenShape.Star) }
 
         return binding.root
     }
@@ -108,7 +105,6 @@ class DrawScreen : Fragment() {
                      x+size+ovalStretch, y+halfSize-ovalStretch)
                 , viewPaint)
             PenShape.Square -> viewCanvas.drawRect(x-halfSize, y-halfSize, x+halfSize, y+halfSize, viewPaint)
-            else -> {}
         }
         binding.view.invalidate()
 

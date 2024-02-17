@@ -92,13 +92,6 @@
                     android:layout_marginEnd="8dp"
                     android:text="Square" />
 
-                <RadioButton
-                    android:id="@+id/starShapeButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginEnd="8dp"
-                    android:text="Star" />
             </RadioGroup>
         </LinearLayout>
 

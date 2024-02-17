@@ -18,7 +18,7 @@ enum class PenSize(val penSize: Float) {
 }
 
 enum class PenShape() {
-    Circle, Oval, Square, Star
+    Circle, Oval, Square
 }
 
 /**
