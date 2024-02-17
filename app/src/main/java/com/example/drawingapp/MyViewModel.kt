@@ -14,11 +14,11 @@ import androidx.lifecycle.ViewModel
  */
 
 enum class PenSize(val penSize: Float) {
-    Small(6F), Medium(12F), Large(20F), ExtraLarge(50F)
+    Small(10F), Medium(16F), Large(25F)
 }
 
-enum class PenShape(val penShape: Int) {
-    Circle(1), Oval(2)
+enum class PenShape() {
+    Circle, Oval, Square, Star
 }
 
 /**
@@ -44,6 +44,10 @@ class MyViewModel : ViewModel() {
 
     fun setPenSize(newSize: PenSize) {
         _penSize.value = newSize
+    }
+
+    fun setPenShape(newShape: PenShape) {
+        _penShape.value = newShape
     }
 
 

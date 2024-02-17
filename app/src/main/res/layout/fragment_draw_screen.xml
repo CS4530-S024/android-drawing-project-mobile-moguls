@@ -8,13 +8,15 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="#F2EBFD"
         android:orientation="vertical">
 
         <com.example.drawingapp.DrawingView
             android:id="@+id/view"
             android:layout_width="400dp"
             android:layout_height="400dp"
-            android:layout_gravity="center_horizontal" />
+            android:layout_gravity="center_horizontal"
+            android:background="#FFFFFF" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -30,23 +32,74 @@
                     android:id="@+id/smallBrushButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="8dp"
                     android:text="Small" />
 
                 <RadioButton
                     android:id="@+id/mediumBrushButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Medium"
-                    android:checked="true" />
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="8dp"
+                    android:checked="true"
+                    android:text="Medium" />
 
                 <RadioButton
                     android:id="@+id/largeBrushButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="8dp"
                     android:text="Large" />
+
             </RadioGroup>
 
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <RadioGroup
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <RadioButton
+                    android:id="@+id/circleShapeButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="8dp"
+                    android:text="Circle"
+                    android:checked="true" />
+
+                <RadioButton
+                    android:id="@+id/ovalShapeButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="8dp"
+                    android:text="Oval" />
+
+                <RadioButton
+                    android:id="@+id/squareShapeButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="8dp"
+                    android:text="Square" />
+
+                <RadioButton
+                    android:id="@+id/starShapeButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="8dp"
+                    android:text="Star" />
+            </RadioGroup>
         </LinearLayout>
 
         <TextView
