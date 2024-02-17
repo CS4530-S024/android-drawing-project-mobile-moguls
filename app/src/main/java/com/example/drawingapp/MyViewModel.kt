@@ -1,6 +1,9 @@
 package com.example.drawingapp
 
 import android.graphics.Bitmap
+import android.graphics.Color
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -17,8 +20,8 @@ enum class PenSize(val penSize: Float) {
     Small(10F), Medium(16F), Large(25F)
 }
 
-enum class PenShape() {
-    Circle, Oval, Square, Star
+enum class PenShape {
+    Circle, Oval, Square
 }
 
 /**
@@ -40,6 +43,11 @@ class MyViewModel : ViewModel() {
         PenShape.Circle
     )
     var penShape = _penShape as LiveData<PenShape>
+
+    private var _penColor : MutableLiveData<Color> = MutableLiveData(
+        Color.valueOf(Color.RED)
+    )
+    var penColor = _penColor as LiveData<Color>
 
     fun setPenSize(newSize: PenSize) {
         _penSize.value = newSize

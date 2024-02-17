@@ -9,7 +9,7 @@ android {
 
     defaultConfig {
         applicationId = "com.example.drawingapp"
-        minSdk = 24
+        minSdk = 26
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
@@ -62,4 +62,7 @@ dependencies {
 
     // fragment stuff
     implementation("androidx.fragment:fragment-ktx:1.6.2")
+
+    // Color Picker Import
+    implementation("com.github.skydoves:colorpickerview:2.3.0")
 }
