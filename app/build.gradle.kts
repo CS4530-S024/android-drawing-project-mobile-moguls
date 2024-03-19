@@ -1,6 +1,9 @@
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
+
+    id("com.google.devtools.ksp")
+
 }
 
 android {
@@ -47,6 +50,7 @@ dependencies {
     implementation("androidx.navigation:navigation-fragment-ktx:2.7.7")
     implementation("androidx.navigation:navigation-ui-ktx:2.7.7")
     implementation("androidx.lifecycle:lifecycle-runtime-testing:2.7.0")
+    implementation("androidx.room:room-common:2.6.1")
 
     // testing
     testImplementation("junit:junit:4.13.2")
@@ -65,4 +69,9 @@ dependencies {
 
     // Color Picker Import
     implementation("com.github.skydoves:colorpickerview:2.3.0")
+
+    // Room stuff
+    implementation("androidx.room:room-common:2.6.1")
+    ksp("androidx.room:room-compiler:2.6.1")
+    implementation("androidx.room:room-ktx:2.6.1")
 }

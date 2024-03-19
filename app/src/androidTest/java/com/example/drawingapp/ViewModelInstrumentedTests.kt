@@ -19,7 +19,7 @@ class ViewModelInstrumentedTests {
     // Tests that setting the pen size works
     @Test
     fun myViewModel_SmallPenSize_ReturnsSmall() {
-        val vm = MyViewModel()
+        val vm = MyViewModel(repository)
         runBlocking {
             val lifecycleOwner = TestLifecycleOwner()
             lifecycleOwner.run {
@@ -37,7 +37,7 @@ class ViewModelInstrumentedTests {
     // Tests that changing the pen size works
     @Test
     fun myViewModel_ChangingPenSize_ReturnsLatestSize() {
-        val vm = MyViewModel()
+        val vm = MyViewModel(repository)
         runBlocking {
             val lifecycleOwner = TestLifecycleOwner()
             val expected = "Medium"
@@ -65,7 +65,7 @@ class ViewModelInstrumentedTests {
     // Tests that setting the pen shape works
     @Test
     fun myViewModel_CirclePenShape_ReturnsCircle() {
-        val vm = MyViewModel()
+        val vm = MyViewModel(repository)
         runBlocking {
             val lifecycleOwner = TestLifecycleOwner()
             lifecycleOwner.run {
@@ -83,7 +83,7 @@ class ViewModelInstrumentedTests {
     // Tests that changing the pen shape works
     @Test
     fun myViewModel_ChangingPenShape_ReturnsLatestShape() {
-        val vm = MyViewModel()
+        val vm = MyViewModel(repository)
         runBlocking {
             val lifecycleOwner = TestLifecycleOwner()
             lifecycleOwner.run {

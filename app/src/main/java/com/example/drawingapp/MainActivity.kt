@@ -21,7 +21,9 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
-        val myViewModel : MyViewModel by viewModels()
+        val myViewModel: MyViewModel by viewModels() {
+            DrawingAppViewModelFactory((application as DrawingAppApplication).drawingAppRepository)
+        }
 
         myViewModel.bitmap.observe(this) {
             Log.e("Debug", "Bitmap changed!")

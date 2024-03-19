@@ -2,12 +2,10 @@ package com.example.drawingapp
 
 import android.graphics.Bitmap
 import android.graphics.Color
-import android.os.Build
-import androidx.annotation.RequiresApi
-import androidx.core.graphics.toColor
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 
 /**
  * @author          - Christian E. Anderson
@@ -29,7 +27,7 @@ enum class PenShape {
 /**
  *
  */
-class MyViewModel : ViewModel() {
+class MyViewModel(private val repository: DrawingAppRepository) : ViewModel() {
 
     private val _bitmap: MutableLiveData<Bitmap> = MutableLiveData(
         Bitmap.createBitmap(500, 500, Bitmap.Config.ARGB_8888)
@@ -63,4 +61,14 @@ class MyViewModel : ViewModel() {
         _penColor.value = newColor
     }
 
+}
+
+class DrawingAppViewModelFactory(private val repository: DrawingAppRepository) : ViewModelProvider.Factory {
+    override fun <T : ViewModel> create(modelClass: Class<T>): T {
+        if (modelClass.isAssignableFrom(MyViewModel::class.java)) {
+            @Suppress("UNCHECKED_CAST")
+            return MyViewModel(repository) as T
+        }
+        throw IllegalArgumentException("Unknown Viewmodel Class")
+    }
 }
