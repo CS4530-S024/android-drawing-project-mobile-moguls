@@ -10,7 +10,7 @@ import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import kotlinx.coroutines.flow.Flow
 
-@Database(entities = [DrawScreen::class], version = 1, exportSchema = false)
+@Database(entities = [Drawing::class], version = 1, exportSchema = false)
 abstract class DrawingAppDatabase : RoomDatabase() {
     abstract fun drawingAppDao(): DrawingAppDAO
 
@@ -39,16 +39,12 @@ abstract class DrawingAppDatabase : RoomDatabase() {
 @Dao
 interface DrawingAppDAO {
     @Insert
-    suspend fun addDrawingAppFilename(filename: String)
+    suspend fun addDrawingAppFilename(drawing: Drawing)
 
     @Query("SELECT * from drawings ORDER BY fileName DESC LIMIT 1")
-    fun latestDrawingFilename() : Flow<String>
+    fun latestDrawingFilename() : Flow<Drawing>
 
     @Query("SELECT * from drawings ORDER BY fileName DESC")
-    fun allDrawingFilenames() : Flow<List<String>>
-
-    @Query("SELECT :name from drawings")
-    fun getFilename(name: String) : String
-
+    fun allDrawingFilenames() : Flow<List<Drawing>>
 
 }

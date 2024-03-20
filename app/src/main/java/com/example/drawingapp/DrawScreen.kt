@@ -14,6 +14,7 @@ import androidx.core.graphics.toColor
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
+import androidx.room.Entity
 import com.example.drawingapp.databinding.FragmentDrawScreenBinding
 import com.skydoves.colorpickerview.ColorEnvelope
 import com.skydoves.colorpickerview.listeners.ColorListener
@@ -30,6 +31,7 @@ import com.skydoves.colorpickerview.listeners.ColorListener
 /**
  *
  */
+
 class DrawScreen : Fragment() {
 
     private val viewModel : MyViewModel by activityViewModels()
@@ -128,6 +130,6 @@ class DrawScreen : Fragment() {
         touchCoordinateScalar = binding.view.width / 500f
     }
 
-    
+
 
 }
