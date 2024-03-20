@@ -4,6 +4,8 @@ import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.flow.toList
+import kotlinx.coroutines.launch
 import java.io.File
 import java.io.FileInputStream
 import java.io.FileNotFoundException
@@ -12,15 +14,19 @@ import java.io.IOException
 
 class DrawingAppRepository(private val scope: CoroutineScope,
                            private val dao: DrawingAppDAO) {
-    val currentDrawing = dao.latestDrawingFilename()
+    val currentDrawing = dao.latestDrawing()
 
-    val allDrawings = dao.allDrawingFilenames()
+    val allDrawings = dao.allDrawing()
 
     fun loadImage(name: String, context: Context): Bitmap? {
         val path = context.filesDir
+        var inputStream: FileInputStream
+        var bitmap: Bitmap
         try {
-            val file = File(path, "$name.png")
-            return BitmapFactory.decodeStream(FileInputStream(file))
+            inputStream = context.openFileInput(name);
+            bitmap = BitmapFactory.decodeStream(inputStream);
+            inputStream.close();
+            return bitmap
         } catch (e: FileNotFoundException) {
             e.printStackTrace()
         }
@@ -28,6 +34,10 @@ class DrawingAppRepository(private val scope: CoroutineScope,
     }
 
     fun saveImage(name: String, image: Bitmap, context: Context){
+
+        scope.launch {
+            dao.addDrawing(Drawing(name))
+        }
         val outputStream = context.openFileOutput(name, Context.MODE_PRIVATE)
         try {
             // Use the compress method on the BitMap object to write image to outputStream

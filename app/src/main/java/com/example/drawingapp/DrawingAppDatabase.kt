@@ -39,12 +39,12 @@ abstract class DrawingAppDatabase : RoomDatabase() {
 @Dao
 interface DrawingAppDAO {
     @Insert
-    suspend fun addDrawingAppFilename(drawing: Drawing)
+    suspend fun addDrawing(drawing: Drawing)
 
     @Query("SELECT * from drawings ORDER BY fileName DESC LIMIT 1")
-    fun latestDrawingFilename() : Flow<Drawing>
+    fun latestDrawing() : Flow<Drawing>
 
     @Query("SELECT * from drawings ORDER BY fileName DESC")
-    fun allDrawingFilenames() : Flow<List<Drawing>>
+    fun allDrawing() : Flow<List<Drawing>>
 
 }
