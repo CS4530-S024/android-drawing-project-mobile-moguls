@@ -5,20 +5,45 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.Button
+import androidx.compose.material3.Card
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Shape
+import androidx.compose.ui.graphics.asImageBitmap
+import androidx.compose.ui.graphics.painter.BitmapPainter
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.platform.ViewCompositionStrategy
+import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.TextUnit
+import androidx.compose.ui.unit.TextUnitType
 import androidx.compose.ui.unit.dp
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import com.example.drawingapp.databinding.FragmentArtGalleryScreenBinding
 
 /**
  * @author          - Christian E. Anderson
@@ -36,6 +61,7 @@ import androidx.navigation.fragment.findNavController
  *
  */
 class ArtGalleryScreen : Fragment() {
+    private val vm: MyViewModel by activityViewModels()
     /**
      *
      */
@@ -43,10 +69,8 @@ class ArtGalleryScreen : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View {/*
-        val vm: MyViewModel by viewModels{
-            DrawingAppViewModelFactory((application as DrawingAppApplication).DrawingAppRepository)}
-        */
+    ): View {
+
         val view = inflater.inflate(R.layout.fragment_art_gallery_screen, container, false)
         val composeView = view.findViewById<ComposeView>(R.id.compose_view)
         composeView.apply {
@@ -56,54 +80,65 @@ class ArtGalleryScreen : Fragment() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    /*val allDrawing by vm.AllDrawing.observeAsState()
-                    LazyColumn(verticalArrangement = Arrangement.spacedBy(4.dp)) {
-                        for (data in allDrawing ?: listOf()) {
-                            item {
-                                WeatherDataDisplay(data = data)
+                    Column {
+                        Button(onClick = {
+                            Log.d("NAV", "navigating to draw screen 2")
+                            findNavController().navigate(R.id.action_artGalleryScreen_to_drawScreen2)
+                        }
+                        ) {
+                            Text(text = "Navigate to DrawScreen2")
+                        }
+                        Spacer(modifier = Modifier.padding(32.dp))
+                        Button(onClick = {
+                            Log.d("NAV", "navigating to save screen 2")
+                            findNavController().navigate(R.id.action_artGalleryScreen_to_saveScreen2)
+                        }
+                        ) {
+                            Text(text = "Navigate to SaveScreen2")
+                        }
+
+                        val allDrawings by vm.allDrawings.observeAsState()
+                        LazyColumn(verticalArrangement = Arrangement.spacedBy(4.dp)) {
+                            if (allDrawings != null) {
+                                items(allDrawings!!.size) {
+                                    ListItem(allDrawings!![it])
+                                }
                             }
-                        }*/
-                }
-                Column {
-                    Button(onClick = { findNavController().navigate(R.id.action_artGalleryScreen_to_drawScreen2) }
-                    ) {
-                        Log.d("NAV", "navigating to draw screen")
-                    }
-                    Spacer(modifier = Modifier.padding(32.dp))
-                    Button(onClick = { findNavController().navigate(R.id.action_artGalleryScreen_to_saveScreen2) }
-                    ) {
-                        Log.d("NAV", "navigating to draw screen")
+
+                        }
                     }
                 }
             }
-        }
-        return view
-    }
-
-    /*@Composable
-    fun ListItem(data: MyData, modifier: Modifier = Modifier) {
-        Row(modifier.fillMaxWidth()) {
-            Text(text = data.name)
-            // … other composable required for displaying `data`
+            return view
         }
     }
 
+    @Composable
+    fun ListItem(data: Drawing, modifier: Modifier = Modifier) {
+        Row(modifier
+                .fillMaxWidth()
+                .padding(horizontal=Dp(40f), vertical=Dp(3f))
+                .height(Dp(350f))) {
+            Card(modifier.padding(all=Dp(20f)),
+                border= BorderStroke(width=Dp(1f), color=Color.Gray)
+            ) {
+                Column(
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        modifier = Modifier.fillMaxWidth()) {
+                    Text(text = data.fileName, fontSize=TextUnit(value=26f, type=TextUnitType.Sp))
+                    Spacer(modifier.padding(8.dp))
+                    Image(
+                        vm.getImageFromFilename(data.fileName, context).asImageBitmap(),
+                        "Default Description",
+                        modifier=modifier
+                                .background(color = Color.White)
+                                .height(Dp(180f))
+                                .width(Dp(180f))
+                    )
+                }
 
-    val binding = FragmentArtGalleryScreenBinding.inflate(layoutInflater, container, false)
+            }
+        }
 
-    // Switch to draw screen
-    binding.button.setOnClickListener
-    {
-        Log.d("SPLASH", "navigating to draw screen")
-        findNavController().navigate(R.id.action_mainScreen_to_drawScreen2)
     }
-
-    // Switch to save screen
-    binding.button2.setOnClickListener
-    {
-        Log.d("SPLASH", "navigating to save screen")
-        findNavController().navigate(R.id.action_mainScreen_to_saveScreen2)
-    }
-    return binding.root
-}*/
 }

@@ -25,7 +25,7 @@
         android:label="fragment_art_gallery"
         tools:layout="@layout/fragment_save_screen" >
         <action
-            android:id="@+id/action_saveScreen2_to_Screen"
+            android:id="@+id/action_saveScreen2_to_GalleryScreen"
             app:destination="@id/artGalleryScreen" />
         <action
             android:id="@+id/action_saveScreen2_to_drawScreen2"
