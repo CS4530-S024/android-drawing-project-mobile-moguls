@@ -13,8 +13,8 @@
             android:id="@+id/action_splashScreen_to_saveScreen2"
             app:destination="@id/saveScreen2" />
         <action
-            android:id="@+id/action_splashScreen_to_mainScreen"
-            app:destination="@id/mainScreen" />
+            android:id="@+id/action_splashScreen_to_artGalleryScreen"
+            app:destination="@id/artGalleryScreen" />
         <action
             android:id="@+id/action_splashScreen_to_drawScreen2"
             app:destination="@id/drawScreen2" />
@@ -25,8 +25,8 @@
         android:label="fragment_art_gallery"
         tools:layout="@layout/fragment_save_screen" >
         <action
-            android:id="@+id/action_saveScreen2_to_mainScreen"
-            app:destination="@id/mainScreen" />
+            android:id="@+id/action_saveScreen2_to_Screen"
+            app:destination="@id/artGalleryScreen" />
         <action
             android:id="@+id/action_saveScreen2_to_drawScreen2"
             app:destination="@id/drawScreen2" />
@@ -37,22 +37,22 @@
         android:label="fragment_draw_screen"
         tools:layout="@layout/fragment_draw_screen" >
         <action
-            android:id="@+id/action_drawScreen2_to_mainScreen"
-            app:destination="@id/mainScreen" />
+            android:id="@+id/action_drawScreen2_to_artGalleryScreen"
+            app:destination="@id/artGalleryScreen" />
         <action
             android:id="@+id/action_drawScreen2_to_saveScreen2"
             app:destination="@id/saveScreen2" />
     </fragment>
     <fragment
-        android:id="@+id/mainScreen"
-        android:name="com.example.drawingapp.MainScreen"
-        android:label="fragment_main_screen"
-        tools:layout="@layout/fragment_main_screen" >
+        android:id="@+id/artGalleryScreen"
+        android:name="com.example.drawingapp.ArtGalleryScreen"
+        android:label="fragment_art_gallery_screen"
+        tools:layout="@layout/fragment_art_gallery_screen">
         <action
-            android:id="@+id/action_mainScreen_to_saveScreen2"
+            android:id="@+id/action_artGalleryScreen_to_saveScreen2"
             app:destination="@id/saveScreen2" />
         <action
-            android:id="@+id/action_mainScreen_to_drawScreen2"
+            android:id="@+id/action_artGalleryScreen_to_drawScreen2"
             app:destination="@id/drawScreen2" />
     </fragment>
 </navigation>
