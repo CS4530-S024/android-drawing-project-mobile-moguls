@@ -33,13 +33,13 @@ class SaveScreen : Fragment() {
 
         // Switch to main screen
         binding.mainScreenButton.setOnClickListener {
-            Log.d("SPLASH", "navigating to main screen")
-            // findNavController().navigate(R.id.action_saveScreen2_to_artGalleryScreen)
+            Log.d("NAV", "navigating to art gallery screen")
+           // findNavController().navigate(R.id.action_saveScreen2_to_artGalleryScreen)
         }
 
         // Switch to draw screen
         binding.drawScreenButton.setOnClickListener {
-            Log.d("SPLASH", "navigating to draw screen")
+            Log.d("NAV", "navigating to draw screen")
             findNavController().navigate(R.id.action_saveScreen2_to_drawScreen2)
         }
         return binding.root
