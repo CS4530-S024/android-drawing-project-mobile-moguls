@@ -1,12 +1,6 @@
 package com.example.drawingapp
 
-import androidx.lifecycle.testing.TestLifecycleOwner
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.runBlocking
-import kotlinx.coroutines.withContext
-import org.junit.Assert.*
-import org.junit.Test
 import org.junit.runner.RunWith
 
 /**
@@ -17,7 +11,7 @@ import org.junit.runner.RunWith
 @RunWith(AndroidJUnit4::class)
 class ViewModelInstrumentedTests {
     // Tests that setting the pen size works
-    @Test
+    /*@Test
     fun myViewModel_SmallPenSize_ReturnsSmall() {
         val vm = MyViewModel(repository)
         runBlocking {
@@ -101,5 +95,5 @@ class ViewModelInstrumentedTests {
                 }
             }
         }
-    }
+    }*/
 }

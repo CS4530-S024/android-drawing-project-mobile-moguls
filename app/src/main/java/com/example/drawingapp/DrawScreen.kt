@@ -59,7 +59,7 @@ class DrawScreen : Fragment() {
 
         // Switch to main screen
         binding.mainScreenButton.setOnClickListener {
-            findNavController().navigate(R.id.action_drawScreen2_to_mainScreen)
+            findNavController().navigate(R.id.action_drawScreen2_to_artGalleryScreen)
         }
 
         // Switch to save screen

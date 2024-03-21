@@ -36,7 +36,7 @@ class SplashScreen : Fragment() {
         // Switch to main screen
         binding.mainScreenButton.setOnClickListener {
             Log.d("SPLASH", "navigating to main screen")
-            findNavController().navigate(R.id.action_splashScreen_to_mainScreen)
+            findNavController().navigate(R.id.action_splashScreen_to_artGalleryScreen)
         }
 
         // Switch to draw screen
