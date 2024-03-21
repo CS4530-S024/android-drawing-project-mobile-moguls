@@ -14,16 +14,15 @@ import java.io.IOException
 
 class DrawingAppRepository(private val scope: CoroutineScope,
                            private val dao: DrawingAppDAO) {
-    val currentDrawing = dao.latestDrawing()
 
+    // val currentDrawing = dao.latestDrawing()
     val allDrawings = dao.allDrawing()
 
-    fun loadImage(name: String, context: Context): Bitmap? {
-        val path = context.filesDir
-        var inputStream: FileInputStream
+    fun loadImage(fileName: String, context: Context): Bitmap? {
+        val inputStream: FileInputStream
         var bitmap: Bitmap
         try {
-            inputStream = context.openFileInput(name);
+            inputStream = context.openFileInput(fileName);
             bitmap = BitmapFactory.decodeStream(inputStream);
             inputStream.close();
             return bitmap
@@ -33,16 +32,15 @@ class DrawingAppRepository(private val scope: CoroutineScope,
         return null
     }
 
-    fun saveImage(name: String, image: Bitmap, context: Context){
+    fun saveImage(fileName: String, image: Bitmap, context: Context){
+        var success = true
 
-        scope.launch {
-            dao.addDrawing(Drawing(name))
-        }
-        val outputStream = context.openFileOutput(name, Context.MODE_PRIVATE)
+        val outputStream = context.openFileOutput(fileName, Context.MODE_PRIVATE)
         try {
             // Use the compress method on the BitMap object to write image to outputStream
             image.compress(Bitmap.CompressFormat.PNG, 100, outputStream)
         } catch (e: Exception) {
+            success = false
             e.printStackTrace()
         } finally {
             try {
@@ -50,16 +48,13 @@ class DrawingAppRepository(private val scope: CoroutineScope,
             } catch (e: IOException) {
                 e.printStackTrace()
             }
+            // Assuming the file actually got saved, send the filename to the DB
+            if (success) {
+                scope.launch {
+                    dao.addDrawing(Drawing(fileName))
+                }
+            }
         }
     }
 
-    /***
-     * Helper method used to save bitmaps to the apps file directory
-     */
-    private fun File.writeBitmap(bitmap: Bitmap, format: Bitmap.CompressFormat, quality: Int) {
-        outputStream().use { out ->
-            bitmap.compress(format, quality, out)
-            out.flush()
-        }
-    }
 }

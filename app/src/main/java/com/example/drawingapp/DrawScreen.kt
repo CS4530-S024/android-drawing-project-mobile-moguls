@@ -1,10 +1,12 @@
 package com.example.drawingapp
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.RectF
 import android.os.Bundle
+import android.util.AttributeSet
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.MotionEvent
@@ -60,14 +62,14 @@ class DrawScreen : Fragment() {
 
         // Switch to main screen
         binding.mainScreenButton.setOnClickListener {
-            findNavController().navigate(R.id.action_drawScreen2_to_artGalleryScreen)
             Log.d("NAV", "navigating to art gallery screen")
+            findNavController().navigate(R.id.action_drawScreen2_to_artGalleryScreen)
         }
 
         // Switch to save screen
         binding.saveScreenButton.setOnClickListener {
-            findNavController().navigate(R.id.action_drawScreen2_to_saveScreen2)
             Log.d("NAV", "navigating to save screen")
+            findNavController().navigate(R.id.action_drawScreen2_to_saveScreen2)
         }
 
         // Listeners for pen size buttons
@@ -80,8 +82,9 @@ class DrawScreen : Fragment() {
             viewModel.setPenShape(PenShape.Oval) }
         binding.squareShapeButton.setOnClickListener { viewModel.setPenShape(PenShape.Square) }
 
+        // Set the color picker's listener and default color
+        binding.colorPickerView.setInitialColor(Color.BLUE)
         binding.colorPickerView.setColorListener(object : ColorListener {
-
             override fun onColorSelected(color: Int, fromUser: Boolean) {
                 viewModel.setPenColor(color.toColor())
 

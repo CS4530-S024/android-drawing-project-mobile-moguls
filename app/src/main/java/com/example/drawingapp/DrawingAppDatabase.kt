@@ -44,7 +44,7 @@ interface DrawingAppDAO {
     @Query("SELECT * from drawings ORDER BY fileName DESC LIMIT 1")
     fun latestDrawing() : Flow<Drawing>
 
-    @Query("SELECT * from drawings ORDER BY fileName DESC")
+    @Query("SELECT * from drawings ORDER BY fileName")
     fun allDrawing() : Flow<List<Drawing>>
 
 }

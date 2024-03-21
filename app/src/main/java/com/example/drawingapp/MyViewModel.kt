@@ -1,11 +1,14 @@
 package com.example.drawingapp
 
+import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.Color
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.asLiveData
+import kotlin.coroutines.coroutineContext
 
 /**
  * @author          - Christian E. Anderson
@@ -30,24 +33,19 @@ enum class PenShape {
 class MyViewModel(private val repository: DrawingAppRepository) : ViewModel() {
 
     private val _bitmap: MutableLiveData<Bitmap> = MutableLiveData(
-        Bitmap.createBitmap(500, 500, Bitmap.Config.ARGB_8888)
-    )
+        Bitmap.createBitmap(500, 500, Bitmap.Config.ARGB_8888))
     val bitmap = _bitmap as LiveData<Bitmap>
 
-    private var _penSize: MutableLiveData<PenSize> = MutableLiveData(
-        PenSize.Medium
-    )
+    private var _penSize: MutableLiveData<PenSize> = MutableLiveData(PenSize.Medium)
     var penSize = _penSize as LiveData<PenSize>
 
-    private var _penShape: MutableLiveData<PenShape> = MutableLiveData(
-        PenShape.Circle
-    )
+    private var _penShape: MutableLiveData<PenShape> = MutableLiveData(PenShape.Circle)
     var penShape = _penShape as LiveData<PenShape>
 
-    private var _penColor : MutableLiveData<Color> = MutableLiveData(
-        Color.valueOf(Color.RED)
-    )
+    private var _penColor : MutableLiveData<Color> = MutableLiveData(Color.valueOf(Color.RED))
     var penColor = _penColor as LiveData<Color>
+
+    var allDrawings: LiveData<List<Drawing>> = repository.allDrawings.asLiveData()
 
     fun setPenSize(newSize: PenSize) {
         _penSize.value = newSize
@@ -59,6 +57,14 @@ class MyViewModel(private val repository: DrawingAppRepository) : ViewModel() {
     
     fun setPenColor(newColor: Color) {
         _penColor.value = newColor
+    }
+
+    fun getImageFromFilename(fileName: String, context: Context?) : Bitmap {
+        return repository.loadImage(fileName, context!!)!!
+    }
+
+    fun saveImage(fileName: String, context: Context?) {
+        repository.saveImage(fileName, _bitmap.value!!, context!!)
     }
 
 }

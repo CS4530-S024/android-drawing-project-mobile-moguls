@@ -1,11 +1,16 @@
 package com.example.drawingapp
 
+import android.annotation.SuppressLint
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.example.drawingapp.databinding.FragmentSaveScreenBinding
 
@@ -21,27 +26,77 @@ import com.example.drawingapp.databinding.FragmentSaveScreenBinding
  *
  */
 class SaveScreen : Fragment() {
+
+    private val vm: MyViewModel by activityViewModels()
+    private var currentFileNameInput: String = ""
+
     /**
      *
      */
+    @SuppressLint("SetTextI18n")
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
 
         val binding = FragmentSaveScreenBinding.inflate(layoutInflater, container, false)
 
-        // Switch to main screen
+        // Hide/clear output label
+        binding.errorOutputLabel.text = "";
+
+        // Fill out image preview
+        binding.imagePreview.setImageBitmap(vm.bitmap.value)
+
+        // Get any changes to filename
+        binding.fileNameBox.addTextChangedListener(object : TextWatcher {
+            // Unused, but we had to implement them
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) { }
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) { }
+
+            override fun afterTextChanged(s: Editable?) { currentFileNameInput = s.toString() }
+        })
+
+        // Switch to main screen handler
         binding.mainScreenButton.setOnClickListener {
-            Log.d("NAV", "navigating to art gallery screen")
-           // findNavController().navigate(R.id.action_saveScreen2_to_artGalleryScreen)
+            Log.d("NAV", "navigating to art gallery screen - no save")
+            findNavController().navigate(R.id.action_saveScreen2_to_GalleryScreen)
         }
 
-        // Switch to draw screen
+        // Switch to draw screen handler
         binding.drawScreenButton.setOnClickListener {
-            Log.d("NAV", "navigating to draw screen")
+            Log.d("NAV", "navigating back to draw screen - no save")
             findNavController().navigate(R.id.action_saveScreen2_to_drawScreen2)
         }
+
+        // Actually try to save their image
+        binding.saveButton.setOnClickListener {
+            if (currentFileNameInput.isEmpty() || currentFileNameInput == "File Name") {
+                binding.errorOutputLabel.text = "Please enter a file name!"
+            }
+            else if (currentFileNameInput.contains(' ')) {
+                binding.errorOutputLabel.text = "Invalid file name!  No spaces in name please.";
+            }
+            else {
+
+                // Make sure filename is unique
+                var taken = false
+                for (drawing in vm.allDrawings.value!!) {
+                    if (drawing.fileName == currentFileNameInput) {
+                        binding.errorOutputLabel.text = "File name already taken!"
+                        taken = true
+                    }
+                }
+
+                // Actually go save now that we know we're good
+                if (!taken) {
+                    Log.d("SAVE", "Saving file under name: $currentFileNameInput")
+                    vm.saveImage(currentFileNameInput, context)
+                    Log.d("SAVE", "Done saving file ($currentFileNameInput).  Navigating to draw")
+                    findNavController().navigate(R.id.action_saveScreen2_to_drawScreen2)
+                }
+            }
+        }
+
         return binding.root
     }
 }
