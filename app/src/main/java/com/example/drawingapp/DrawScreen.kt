@@ -5,6 +5,7 @@ import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.RectF
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
@@ -60,11 +61,13 @@ class DrawScreen : Fragment() {
         // Switch to main screen
         binding.mainScreenButton.setOnClickListener {
             findNavController().navigate(R.id.action_drawScreen2_to_artGalleryScreen)
+            Log.d("NAV", "navigating to art gallery screen")
         }
 
         // Switch to save screen
         binding.saveScreenButton.setOnClickListener {
             findNavController().navigate(R.id.action_drawScreen2_to_saveScreen2)
+            Log.d("NAV", "navigating to save screen")
         }
 
         // Listeners for pen size buttons

@@ -1,16 +1,22 @@
 package com.example.drawingapp
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.platform.ViewCompositionStrategy
+import androidx.compose.ui.unit.dp
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 
@@ -37,35 +43,48 @@ class ArtGalleryScreen : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View {
-
-        return ComposeView(requireContext()).apply {
+    ): View {/*
+        val vm: MyViewModel by viewModels{
+            DrawingAppViewModelFactory((application as DrawingAppApplication).DrawingAppRepository)}
+        */
+        val view = inflater.inflate(R.layout.fragment_art_gallery_screen, container, false)
+        val composeView = view.findViewById<ComposeView>(R.id.compose_view)
+        composeView.apply {
             setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
             setContent {
-                LazyColumn(Modifier.fillMaxSize()) {
-                    // We use a LazyColumn since the layout manager of the RecyclerView is a vertical LinearLayoutManager
+                Surface(
+                    modifier = Modifier.fillMaxSize(),
+                    color = MaterialTheme.colorScheme.background
+                ) {
+                    /*val allDrawing by vm.AllDrawing.observeAsState()
+                    LazyColumn(verticalArrangement = Arrangement.spacedBy(4.dp)) {
+                        for (data in allDrawing ?: listOf()) {
+                            item {
+                                WeatherDataDisplay(data = data)
+                            }
+                        }*/
+                }
+                Column {
+                    Button(onClick = { findNavController().navigate(R.id.action_artGalleryScreen_to_drawScreen2) }
+                    ) {
+                        Log.d("NAV", "navigating to draw screen")
+                    }
+                    Spacer(modifier = Modifier.padding(32.dp))
+                    Button(onClick = { findNavController().navigate(R.id.action_artGalleryScreen_to_saveScreen2) }
+                    ) {
+                        Log.d("NAV", "navigating to draw screen")
+                    }
                 }
             }
-            /*
-                Column {
-                    GotoDrawingScreen()
-                }
-            }*/
         }
-    }
-
-    @Composable
-    fun GotoDrawingScreen() {
-        Button(onClick = { findNavController().navigate(R.id.action_artGalleryScreen_to_drawScreen2) }
-        ) {
-        }
+        return view
     }
 
     /*@Composable
     fun ListItem(data: MyData, modifier: Modifier = Modifier) {
         Row(modifier.fillMaxWidth()) {
             Text(text = data.name)
-            // … other composables required for displaying `data`
+            // … other composable required for displaying `data`
         }
     }
 
