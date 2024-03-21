@@ -5,7 +5,10 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -13,6 +16,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.platform.ViewCompositionStrategy
+import androidx.compose.ui.unit.dp
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 
@@ -39,7 +43,10 @@ class ArtGalleryScreen : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View {
+    ): View {/*
+        val vm: MyViewModel by viewModels{
+            DrawingAppViewModelFactory((application as DrawingAppApplication).DrawingAppRepository)}
+        */
         val view = inflater.inflate(R.layout.fragment_art_gallery_screen, container, false)
         val composeView = view.findViewById<ComposeView>(R.id.compose_view)
         composeView.apply {
@@ -49,21 +56,28 @@ class ArtGalleryScreen : Fragment() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    GotoDrawingScreen()
+                    /*val allDrawing by vm.AllDrawing.observeAsState()
+                    LazyColumn(verticalArrangement = Arrangement.spacedBy(4.dp)) {
+                        for (data in allDrawing ?: listOf()) {
+                            item {
+                                WeatherDataDisplay(data = data)
+                            }
+                        }*/
                 }
-
+                Column {
+                    Button(onClick = { findNavController().navigate(R.id.action_artGalleryScreen_to_drawScreen2) }
+                    ) {
+                        Log.d("NAV", "navigating to draw screen")
+                    }
+                    Spacer(modifier = Modifier.padding(32.dp))
+                    Button(onClick = { findNavController().navigate(R.id.action_artGalleryScreen_to_saveScreen2) }
+                    ) {
+                        Log.d("NAV", "navigating to draw screen")
+                    }
+                }
             }
         }
         return view
-    }
-
-    @Composable
-    fun GotoDrawingScreen() {
-        Button(onClick = { findNavController().navigate(R.id.action_artGalleryScreen_to_drawScreen2) }
-        ) {
-
-            Log.d("NAV", "navigating to main screen")
-        }
     }
 
     /*@Composable
