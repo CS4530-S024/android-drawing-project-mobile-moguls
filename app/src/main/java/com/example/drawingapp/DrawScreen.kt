@@ -1,6 +1,7 @@
 package com.example.drawingapp
 
 import android.annotation.SuppressLint
+import android.graphics.Bitmap
 import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.RectF
@@ -66,6 +67,14 @@ class DrawScreen : Fragment() {
         binding.mainScreenButton.setOnClickListener {
             Log.d("NAV", "navigating to art gallery screen")
             findNavController().navigate(R.id.action_drawScreen2_to_artGalleryScreen)
+        }
+
+        binding.newDrawingButton.setOnClickListener {
+            Log.d("DRAW", "Setting up new drawing.  Losing all unsaved progress..");
+            viewModel.setBitmapImage(Bitmap.createBitmap(500, 500, Bitmap.Config.ARGB_8888))
+            viewModel.currentFileName = ""
+            binding.view.canvas.setBitmap(viewModel.bitmap.value!!)
+            binding.view.invalidate()
         }
 
         // Switch to save screen

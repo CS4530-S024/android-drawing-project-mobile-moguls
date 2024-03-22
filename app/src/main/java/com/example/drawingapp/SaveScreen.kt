@@ -56,6 +56,10 @@ class SaveScreen : Fragment() {
             }
         })
 
+        if (vm.currentFileName.isNotEmpty()) {
+            binding.fileNameBox.text.append(vm.currentFileName)
+        }
+
         // Switch to draw screen handler
         binding.drawScreenButton.setOnClickListener {
             Log.d("NAV", "navigating back to draw screen - no save")
@@ -72,7 +76,7 @@ class SaveScreen : Fragment() {
 
                 // Make sure filename is unique
                 var taken = false
-                if (vm.allDrawings.value != null) {
+                if (vm.allDrawings.value != null && vm.currentFileName.isEmpty()) {
                     for (drawing in vm.allDrawings.value!!) {
                         if (drawing.fileName == currentFileNameInput) {
                             binding.errorOutputLabel.text = "File name already taken!"
@@ -84,6 +88,7 @@ class SaveScreen : Fragment() {
 
                 // Actually go save now that we know we're good
                 if (!taken) {
+                    vm.currentFileName = currentFileNameInput
                     Log.d("SAVE", "Saving file under name: $currentFileNameInput")
                     vm.saveImage(currentFileNameInput, context)
                     Log.d("SAVE", "Done saving file ($currentFileNameInput).  Navigating to draw")

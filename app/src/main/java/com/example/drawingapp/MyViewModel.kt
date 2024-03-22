@@ -51,6 +51,8 @@ class MyViewModel(private val repository: DrawingAppRepository) : ViewModel() {
 
     var allDrawings: LiveData<List<Drawing>> = repository.allDrawings.asLiveData()
 
+    public var currentFileName: String = "";
+
     fun setPenSize(newSize: PenSize) {
         _penSize.value = newSize
     }
@@ -61,6 +63,10 @@ class MyViewModel(private val repository: DrawingAppRepository) : ViewModel() {
     
     fun setPenColor(newColor: Color) {
         _penColor.value = newColor
+    }
+
+    fun setBitmapImage(newImage: Bitmap) {
+        _bitmap.value = newImage
     }
 
     fun getImageFromFilename(fileName: String, context: Context?) : Bitmap {

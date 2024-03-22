@@ -1,5 +1,6 @@
 package com.example.drawingapp
 
+import android.graphics.Bitmap
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -132,36 +133,44 @@ class ArtGalleryScreen : Fragment() {
      */
     @Composable
     fun ListItem(data: Drawing, modifier: Modifier = Modifier) {
+        val drawingImage = vm.getImageFromFilename(data.fileName, context).copy(Bitmap.Config.ARGB_8888, true)
         Row(
             modifier
                 .wrapContentWidth()
                 .padding(horizontal = Dp(1f), vertical = Dp(3f))
         ) {
-            Card(
-                modifier.padding(all = Dp(5f)),
-                border = BorderStroke(width = Dp(1f), color = Color.Gray)
-            ) {
-                Column(
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    modifier = Modifier.fillMaxWidth()
+            Button(onClick = {
+                Log.d("NAV", "Navigating from the gallery to drawing ${data.fileName}")
+                vm.currentFileName = data.fileName
+                vm.setBitmapImage(drawingImage)
+                findNavController().navigate(R.id.action_artGalleryScreen_to_drawScreen2)
+            }, content= {
+                Card(
+                    modifier.padding(all = Dp(5f)),
+                    border = BorderStroke(width = Dp(1f), color = Color.Gray)
                 ) {
-                    Spacer(modifier.padding(4.dp))
-                    Text(
-                        text = data.fileName,
-                        fontSize = TextUnit(value = 21f, type = TextUnitType.Sp)
-                    )
-                    Spacer(modifier.padding(4.dp))
-                    Image(
-                        vm.getImageFromFilename(data.fileName, context).asImageBitmap(),
-                        "Default Description",
-                        modifier = modifier
-                            .background(color = Color.White)
-                            .height(Dp(120f))
-                            .width(Dp(120f))
-                    )
-                    Spacer(modifier.padding(6.dp))
-                }
-            }
-        }
-    }
-}
+                    Column(
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        Spacer(modifier.padding(4.dp))
+                        Text(
+                            text = data.fileName,
+                            fontSize = TextUnit(value = 21f, type = TextUnitType.Sp)
+                        )
+                        Spacer(modifier.padding(4.dp))
+                        Image(
+                            drawingImage.asImageBitmap(),
+                            "Default Description",
+                            modifier = modifier
+                                .background(color = Color.White)
+                                .height(Dp(120f))
+                                .width(Dp(120f))
+                        )
+                        Spacer(modifier.padding(6.dp))
+                    } // End column
+                } // End card
+            }) // End button
+        }// End Row
+    }// End List Item
+}// End screen class
