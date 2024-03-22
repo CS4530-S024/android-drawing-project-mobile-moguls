@@ -94,7 +94,7 @@ class ArtGalleryScreen : Fragment() {
                             ) {
                                 Text(text = "Back")
                             }
-                            Spacer(modifier = Modifier.padding(32.dp))
+                            Spacer(modifier = Modifier.padding(64.dp))
                             Button(onClick = {
                                 Log.d("NAV", "navigating to draw screen 2")
                                 findNavController().navigate(R.id.action_artGalleryScreen_to_drawScreen2)
@@ -108,20 +108,29 @@ class ArtGalleryScreen : Fragment() {
 
                         val allDrawings by vm.allDrawings.observeAsState()
                         val gridState = rememberLazyStaggeredGridState()
-                        LazyVerticalStaggeredGrid(
-                            columns = StaggeredGridCells.Fixed(2),
-                            modifier = Modifier.fillMaxSize(),
-                            state = gridState,
-                            horizontalArrangement = Arrangement.spacedBy(0.dp),
-                            content = {
-                                if (allDrawings != null) {
+                        if (allDrawings != null && allDrawings!!.isNotEmpty()) {
+                            LazyVerticalStaggeredGrid(
+                                columns = StaggeredGridCells.Fixed(2),
+                                modifier = Modifier.fillMaxSize(),
+                                state = gridState,
+                                horizontalArrangement = Arrangement.spacedBy(0.dp),
+                                content = {
                                     items(allDrawings!!.size) {
                                         ListItem(allDrawings!![it])
                                     }
                                 }
+                            )
+                        } else {
+                            Spacer(modifier=Modifier.padding(70.dp))
+                            Row(
+                                modifier=Modifier.fillMaxWidth().align(Alignment.End)
+                            ){
+                                Spacer(Modifier.weight(1f))
+                                Text(text="You have no drawings yet!", modifier=Modifier.align(Alignment.CenterVertically))
+                                Spacer(Modifier.weight(1f))
                             }
 
-                        )
+                        }
                     }
                 }
             }

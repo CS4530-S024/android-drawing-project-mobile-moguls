@@ -108,6 +108,9 @@ class DrawScreen : Fragment() {
             }
         })
 
+        binding.view.instantiateRect(viewModel.screenWidth)
+        takeNoteOfViewWidth()
+
         return binding.root
     }
 
@@ -124,15 +127,6 @@ class DrawScreen : Fragment() {
         // Reassign so that we can optionally adjust in the if block below
         var x: Float = xIn
         var y: Float = yIn
-
-        if (!binding.view.widthChecked && binding.view.width > 0) {
-            binding.view.instantiateRect(viewModel.screenWidth)
-            takeNoteOfViewWidth()
-            // If I didn't add this, the very first dot drawn would be
-            // out of place and not scaled correctly
-            x /= touchCoordinateScalar
-            y /= touchCoordinateScalar
-        }
 
         val viewCanvas = binding.view.canvas
         val viewPaint = Paint()
