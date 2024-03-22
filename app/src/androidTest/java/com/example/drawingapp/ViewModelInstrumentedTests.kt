@@ -1,17 +1,61 @@
 package com.example.drawingapp
 
+import androidx.compose.ui.test.junit4.createComposeRule
+import androidx.compose.ui.test.onNodeWithTag
+import androidx.compose.ui.test.performClick
+import androidx.lifecycle.testing.TestLifecycleOwner
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import androidx.test.platform.app.InstrumentationRegistry
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.withContext
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertNotSame
+import org.junit.Rule
+import org.junit.Test
 import org.junit.runner.RunWith
 
 /**
- * Instrumented test, which will execute on an Android device.
- *
+ * Instrumented tests, which will execute on an Android device.
  * See [testing documentation](http://d.android.com/tools/testing).
  */
+
 @RunWith(AndroidJUnit4::class)
-class ViewModelInstrumentedTests {
+class ExampleInstrumentedTest {
+    @get:Rule
+    val composeTestRule = createComposeRule()
+
+    @Test
+    fun useAppContext() {
+        // Context of the app under test.
+        val appContext = InstrumentationRegistry.getInstrumentation().targetContext
+        assertEquals("com.example.drawingapp", appContext.packageName)
+    }
+
+    @Test
+    fun splashScreenToCanvasTest() {
+        // Start the app
+        composeTestRule.setContent {
+            val appContext = InstrumentationRegistry.getInstrumentation().targetContext
+        }
+        // Do assertion
+        composeTestRule.onNodeWithTag("Canvas").performClick()
+    }
+
+    @Test
+    fun splashScreenToArtGalleryTest() {
+        // Start the app
+        composeTestRule.setContent {
+            val appContext = InstrumentationRegistry.getInstrumentation().targetContext
+        }
+        // Do assertion
+        composeTestRule.onNodeWithTag("Art Gallery").performClick()
+    }
+
+    /*private val repository: DrawingAppRepository
+
     // Tests that setting the pen size works
-    /*@Test
+    @Test
     fun myViewModel_SmallPenSize_ReturnsSmall() {
         val vm = MyViewModel(repository)
         runBlocking {
