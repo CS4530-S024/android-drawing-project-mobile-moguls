@@ -7,10 +7,13 @@ import androidx.appcompat.app.AppCompatActivity
 
 /**
  * @author          - Christian E. Anderson
- * @teammate        - Crosby White & Matthew Williams
- * @version         - 16-FEB-2024
+ * @teammate(s)     - Crosby White & Matthew Williams
+ * @version         - Phase 2 = 22-MAR-2024; Phase 1 = 16-FEB-2024
  *
  *      This file defines the main activity for the Drawing App.
+ *
+ *  Phase 2:
+ *
  */
 
 class MainActivity : AppCompatActivity() {
@@ -21,7 +24,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
-        val myViewModel: MyViewModel by viewModels() {
+        val myViewModel: MyViewModel by viewModels {
             DrawingAppViewModelFactory((application as DrawingAppApplication).drawingAppRepository)
         }
 

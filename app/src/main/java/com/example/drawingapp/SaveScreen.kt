@@ -8,7 +8,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
@@ -16,13 +15,12 @@ import com.example.drawingapp.databinding.FragmentSaveScreenBinding
 
 /**
  * @author          - Christian E. Anderson
- * @teammate        - Crosby White & Matthew Williams
- * @version         - 16-FEB-2024
+ * @teammate(s)     - Crosby White & Matthew Williams
+ * @version         - Phase 2 = 22-MAR-2024; Phase 1 = 16-FEB-2024
  *
- *      This file defines the save screen for the Drawing App.
- */
-
-/**
+ *      This file defines the saving screen for the Drawing App.
+ *
+ *  Phase 2:
  *
  */
 class SaveScreen : Fragment() {
@@ -42,7 +40,7 @@ class SaveScreen : Fragment() {
         val binding = FragmentSaveScreenBinding.inflate(layoutInflater, container, false)
 
         // Hide/clear output label
-        binding.errorOutputLabel.text = "";
+        binding.errorOutputLabel.text = ""
 
         // Fill out image preview
         binding.imagePreview.setImageBitmap(vm.bitmap.value)
@@ -50,10 +48,12 @@ class SaveScreen : Fragment() {
         // Get any changes to filename
         binding.fileNameBox.addTextChangedListener(object : TextWatcher {
             // Unused, but we had to implement them
-            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) { }
-            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) { }
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
 
-            override fun afterTextChanged(s: Editable?) { currentFileNameInput = s.toString() }
+            override fun afterTextChanged(s: Editable?) {
+                currentFileNameInput = s.toString()
+            }
         })
 
         // Switch to main screen handler
@@ -72,11 +72,9 @@ class SaveScreen : Fragment() {
         binding.saveButton.setOnClickListener {
             if (currentFileNameInput.isEmpty() || currentFileNameInput == "File Name") {
                 binding.errorOutputLabel.text = "Please enter a file name!"
-            }
-            else if (currentFileNameInput.contains(' ')) {
-                binding.errorOutputLabel.text = "Invalid file name!  No spaces in name please.";
-            }
-            else {
+            } else if (currentFileNameInput.contains(' ')) {
+                binding.errorOutputLabel.text = "Invalid file name!  No spaces in name please."
+            } else {
 
                 // Make sure filename is unique
                 var taken = false
@@ -96,7 +94,6 @@ class SaveScreen : Fragment() {
                 }
             }
         }
-
         return binding.root
     }
 }

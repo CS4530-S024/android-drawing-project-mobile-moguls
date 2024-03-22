@@ -10,7 +10,6 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -30,9 +29,7 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.asImageBitmap
-import androidx.compose.ui.graphics.painter.BitmapPainter
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.compose.ui.unit.Dp
@@ -41,29 +38,25 @@ import androidx.compose.ui.unit.TextUnitType
 import androidx.compose.ui.unit.dp
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import com.example.drawingapp.databinding.FragmentArtGalleryScreenBinding
 
 /**
  * @author          - Christian E. Anderson
- * @teammate        - Crosby White & Matthew Williams
- * @version         - 16-FEB-2024
+ * @teammate(s)     - Crosby White & Matthew Williams
+ * @version         - Phase 2 = 22-MAR-2024; Phase 1 = 16-FEB-2024
  *
  *      This file defines the art gallery screen for the Drawing App.
- */
-
-/**
+ *
  *  Phase 2:
  *      The UI should be display a list of images that the user has drawn, if any.
  *      The UI should be done using Jetpack Compose.
  *      If the user clicks on a drawing in the list, it should load that drawing in the drawing canvas.
- *
  */
 class ArtGalleryScreen : Fragment() {
     private val vm: MyViewModel by activityViewModels()
+
     /**
-     *
+     * Defines what the view will look at creation.
      */
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -113,32 +106,42 @@ class ArtGalleryScreen : Fragment() {
         }
     }
 
+    /**
+     * This composable function defines how a drawing in the list should be displayed on the view.
+     * @param data      - Drawing to be displayed
+     * @param modifier  - Object used to define design of the UI elements
+     */
     @Composable
     fun ListItem(data: Drawing, modifier: Modifier = Modifier) {
-        Row(modifier
+        Row(
+            modifier
                 .fillMaxWidth()
-                .padding(horizontal=Dp(40f), vertical=Dp(3f))
-                .height(Dp(350f))) {
-            Card(modifier.padding(all=Dp(20f)),
-                border= BorderStroke(width=Dp(1f), color=Color.Gray)
+                .padding(horizontal = Dp(40f), vertical = Dp(3f))
+                .height(Dp(350f))
+        ) {
+            Card(
+                modifier.padding(all = Dp(20f)),
+                border = BorderStroke(width = Dp(1f), color = Color.Gray)
             ) {
                 Column(
-                        horizontalAlignment = Alignment.CenterHorizontally,
-                        modifier = Modifier.fillMaxWidth()) {
-                    Text(text = data.fileName, fontSize=TextUnit(value=26f, type=TextUnitType.Sp))
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Text(
+                        text = data.fileName,
+                        fontSize = TextUnit(value = 26f, type = TextUnitType.Sp)
+                    )
                     Spacer(modifier.padding(8.dp))
                     Image(
                         vm.getImageFromFilename(data.fileName, context).asImageBitmap(),
                         "Default Description",
-                        modifier=modifier
-                                .background(color = Color.White)
-                                .height(Dp(180f))
-                                .width(Dp(180f))
+                        modifier = modifier
+                            .background(color = Color.White)
+                            .height(Dp(180f))
+                            .width(Dp(180f))
                     )
                 }
-
             }
         }
-
     }
 }

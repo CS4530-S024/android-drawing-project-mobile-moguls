@@ -4,27 +4,40 @@ import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.launch
-import java.io.File
 import java.io.FileInputStream
 import java.io.FileNotFoundException
 import java.io.IOException
 
+/**
+ * @author          - Christian E. Anderson
+ * @teammate(s)     - Crosby White & Matthew Williams
+ * @version         - Phase 2 = 22-MAR-2024; Phase 1 = 16-FEB-2024
+ *
+ *      This file defines the Room Repository for the Drawing App.
+ *
+ *  Phase 2:
+ *
+ */
 
-class DrawingAppRepository(private val scope: CoroutineScope,
-                           private val dao: DrawingAppDAO) {
+class DrawingAppRepository(
+    private val scope: CoroutineScope,
+    private val dao: DrawingAppDAO
+) {
 
     // val currentDrawing = dao.latestDrawing()
     val allDrawings = dao.allDrawing()
 
+    /**
+     * TODO - Implement to work from UI interaction
+     */
     fun loadImage(fileName: String, context: Context): Bitmap? {
         val inputStream: FileInputStream
-        var bitmap: Bitmap
+        val bitmap: Bitmap
         try {
-            inputStream = context.openFileInput(fileName);
-            bitmap = BitmapFactory.decodeStream(inputStream);
-            inputStream.close();
+            inputStream = context.openFileInput(fileName)
+            bitmap = BitmapFactory.decodeStream(inputStream)
+            inputStream.close()
             return bitmap
         } catch (e: FileNotFoundException) {
             e.printStackTrace()
@@ -32,7 +45,13 @@ class DrawingAppRepository(private val scope: CoroutineScope,
         return null
     }
 
-    fun saveImage(fileName: String, image: Bitmap, context: Context){
+    /**
+     * This function saves the most recent drawing to file and file name to database.
+     * @param fileName  - Name of file defined by user
+     * @param image     - Drawing created by user
+     * @param context   - Android thing for saving to files.
+     */
+    fun saveImage(fileName: String, image: Bitmap, context: Context) {
         var success = true
 
         val outputStream = context.openFileOutput(fileName, Context.MODE_PRIVATE)

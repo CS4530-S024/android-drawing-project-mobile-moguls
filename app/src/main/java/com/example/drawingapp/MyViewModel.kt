@@ -8,14 +8,18 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.asLiveData
-import kotlin.coroutines.coroutineContext
 
 /**
  * @author          - Christian E. Anderson
- * @teammate        - Crosby White & Matthew Williams
- * @version         - 16-FEB-2024
+ * @teammate(s)     - Crosby White & Matthew Williams
+ * @version         - Phase 2 = 22-MAR-2024; Phase 1 = 16-FEB-2024
  *
  *      This file defines the view model for the Drawing App.
+ *
+ *  Phase 2:
+ *      The UI should be display a list of images that the user has drawn, if any.
+ *      The UI should be done using Jetpack Compose.
+ *      If the user clicks on a drawing in the list, it should load that drawing in the drawing canvas.
  */
 
 enum class PenSize(val penSize: Float) {
@@ -69,6 +73,9 @@ class MyViewModel(private val repository: DrawingAppRepository) : ViewModel() {
 
 }
 
+/**
+ *
+ */
 class DrawingAppViewModelFactory(private val repository: DrawingAppRepository) : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(MyViewModel::class.java)) {
