@@ -1,6 +1,7 @@
 package com.example.drawingapp
 
 import android.os.Bundle
+import android.util.DisplayMetrics
 import android.util.Log
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -31,6 +32,9 @@ class MainActivity : AppCompatActivity() {
         myViewModel.bitmap.observe(this) {
             Log.e("Debug", "Bitmap changed!")
         }
+
+        // Note down the width of the screen for later
+        myViewModel.screenWidth = windowManager.currentWindowMetrics.bounds.width()
 
         setContentView(R.layout.activity_main)
     }

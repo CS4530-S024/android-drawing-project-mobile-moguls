@@ -1,12 +1,14 @@
 package com.example.drawingapp
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.Rect
 import android.graphics.RectF
 import android.os.Bundle
+import android.util.AttributeSet
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.MotionEvent
@@ -64,6 +66,9 @@ class DrawScreen : Fragment() {
             true
         }
 
+        binding.view.instantiateRect(viewModel.screenWidth)
+        takeNoteOfViewWidth()
+
         // Switch to main screen
         binding.mainScreenButton.setOnClickListener {
             Log.d("NAV", "navigating to art gallery screen")
@@ -100,9 +105,9 @@ class DrawScreen : Fragment() {
         binding.colorPickerView.setColorListener(object : ColorListener {
             override fun onColorSelected(color: Int, fromUser: Boolean) {
                 viewModel.setPenColor(color.toColor())
-
             }
         })
+
         return binding.root
     }
 
@@ -121,7 +126,7 @@ class DrawScreen : Fragment() {
         var y: Float = yIn
 
         if (!binding.view.widthChecked && binding.view.width > 0) {
-            binding.view.instantiateRect()
+            binding.view.instantiateRect(viewModel.screenWidth)
             takeNoteOfViewWidth()
             // If I didn't add this, the very first dot drawn would be
             // out of place and not scaled correctly
@@ -161,6 +166,6 @@ class DrawScreen : Fragment() {
      */
     private fun takeNoteOfViewWidth() {
         // 500f here is the hard-coded width of the internal Bitmap being used
-        touchCoordinateScalar = binding.view.width / 500f
+        touchCoordinateScalar = viewModel.screenWidth / 500f
     }
 }

@@ -51,7 +51,8 @@ class MyViewModel(private val repository: DrawingAppRepository) : ViewModel() {
 
     var allDrawings: LiveData<List<Drawing>> = repository.allDrawings.asLiveData()
 
-    public var currentFileName: String = "";
+    var currentFileName: String = ""
+    var screenWidth = 500
 
     fun setPenSize(newSize: PenSize) {
         _penSize.value = newSize

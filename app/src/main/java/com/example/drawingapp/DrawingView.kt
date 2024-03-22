@@ -39,8 +39,8 @@ class DrawingView(context: Context, attrs: AttributeSet) : View(context, attrs) 
         canvas.setBitmap(drawingBitmap)
     }
 
-    fun instantiateRect() {
-        destRect = Rect(0, 0, width, width)
+    fun instantiateRect(screenWidth: Int) {
+        destRect = Rect(0, 0, screenWidth-20, screenWidth-20)
         widthChecked = true
     }
 }
