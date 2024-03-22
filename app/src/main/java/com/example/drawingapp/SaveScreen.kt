@@ -56,12 +56,6 @@ class SaveScreen : Fragment() {
             }
         })
 
-        // Switch to main screen handler
-        binding.mainScreenButton.setOnClickListener {
-            Log.d("NAV", "navigating to art gallery screen - no save")
-            findNavController().navigate(R.id.action_saveScreen2_to_GalleryScreen)
-        }
-
         // Switch to draw screen handler
         binding.drawScreenButton.setOnClickListener {
             Log.d("NAV", "navigating back to draw screen - no save")
@@ -78,12 +72,15 @@ class SaveScreen : Fragment() {
 
                 // Make sure filename is unique
                 var taken = false
-                for (drawing in vm.allDrawings.value!!) {
-                    if (drawing.fileName == currentFileNameInput) {
-                        binding.errorOutputLabel.text = "File name already taken!"
-                        taken = true
+                if (vm.allDrawings.value != null) {
+                    for (drawing in vm.allDrawings.value!!) {
+                        if (drawing.fileName == currentFileNameInput) {
+                            binding.errorOutputLabel.text = "File name already taken!"
+                            taken = true
+                        }
                     }
                 }
+
 
                 // Actually go save now that we know we're good
                 if (!taken) {

@@ -99,12 +99,13 @@
     <com.skydoves.colorpickerview.ColorPickerView
         android:id="@+id/colorPickerView"
         android:layout_width="match_parent"
-        android:layout_height="190dp" />
+        android:layout_height="180dp" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
+        android:layout_marginBottom="15dp"
         android:gravity="bottom|center_horizontal"
         android:orientation="horizontal">
 
@@ -122,7 +123,7 @@
             style="?android:attr/buttonBarButtonStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
+            android:layout_marginStart="20dp"
             android:layout_marginEnd="10dp"
             android:text="@string/save_screen" />
     </LinearLayout>

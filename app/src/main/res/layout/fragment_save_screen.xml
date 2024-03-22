@@ -11,8 +11,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
-        android:gravity="center|fill_vertical"
+        android:layout_marginTop="30dp"
+        android:gravity="fill_vertical"
         android:orientation="horizontal">
 
         <Button
@@ -20,15 +20,9 @@
             style="?android:attr/buttonBarButtonStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
             android:text="@string/go_to_draw_screen" />
 
-        <Button
-            android:id="@+id/mainScreenButton"
-            style="?android:attr/buttonBarButtonStyle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:text="@string/go_to_art_gallery" />
     </LinearLayout>
 
     <ImageView

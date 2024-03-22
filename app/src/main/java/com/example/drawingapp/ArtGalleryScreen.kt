@@ -17,7 +17,11 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
+import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
+import androidx.compose.foundation.lazy.staggeredgrid.rememberLazyStaggeredGridState
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.MaterialTheme
@@ -32,6 +36,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.platform.ViewCompositionStrategy
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.TextUnitType
@@ -74,31 +80,44 @@ class ArtGalleryScreen : Fragment() {
                     color = MaterialTheme.colorScheme.background
                 ) {
                     Column {
-                        Button(onClick = {
-                            Log.d("NAV", "navigating to draw screen 2")
-                            findNavController().navigate(R.id.action_artGalleryScreen_to_drawScreen2)
-                        }
-                        ) {
-                            Text(text = "Navigate to DrawScreen2")
-                        }
-                        Spacer(modifier = Modifier.padding(32.dp))
-                        Button(onClick = {
-                            Log.d("NAV", "navigating to save screen 2")
-                            findNavController().navigate(R.id.action_artGalleryScreen_to_saveScreen2)
-                        }
-                        ) {
-                            Text(text = "Navigate to SaveScreen2")
+                        Spacer(Modifier.padding(15.dp))
+                        Row (Modifier.align(Alignment.CenterHorizontally)) {
+                            Button(onClick = {
+                                Log.d("NAV", "navigating to save screen 2")
+                                findNavController().navigate(R.id.action_artGalleryScreen_to_splashScreen)
+                            }, modifier=
+                                Modifier.background(color=MaterialTheme.colorScheme.background)
+                            ) {
+                                Text(text = "Back")
+                            }
+                            Spacer(modifier = Modifier.padding(32.dp))
+                            Button(onClick = {
+                                Log.d("NAV", "navigating to draw screen 2")
+                                findNavController().navigate(R.id.action_artGalleryScreen_to_drawScreen2)
+                            }
+                            ) {
+                                Text(text = "Draw Screen")
+                            }
                         }
 
+                        Spacer(modifier=Modifier.padding(15.dp))
+
                         val allDrawings by vm.allDrawings.observeAsState()
-                        LazyColumn(verticalArrangement = Arrangement.spacedBy(4.dp)) {
-                            if (allDrawings != null) {
-                                items(allDrawings!!.size) {
-                                    ListItem(allDrawings!![it])
+                        val gridState = rememberLazyStaggeredGridState()
+                        LazyVerticalStaggeredGrid(
+                            columns = StaggeredGridCells.Fixed(2),
+                            modifier = Modifier.fillMaxSize(),
+                            state = gridState,
+                            horizontalArrangement = Arrangement.spacedBy(10.dp),
+                            content = {
+                                if (allDrawings != null) {
+                                    items(allDrawings!!.size) {
+                                        ListItem(allDrawings!![it])
+                                    }
                                 }
                             }
 
-                        }
+                        )
                     }
                 }
             }
@@ -115,31 +134,32 @@ class ArtGalleryScreen : Fragment() {
     fun ListItem(data: Drawing, modifier: Modifier = Modifier) {
         Row(
             modifier
-                .fillMaxWidth()
-                .padding(horizontal = Dp(40f), vertical = Dp(3f))
-                .height(Dp(350f))
+                .wrapContentWidth()
+                .padding(horizontal = Dp(1f), vertical = Dp(3f))
         ) {
             Card(
-                modifier.padding(all = Dp(20f)),
+                modifier.padding(all = Dp(5f)),
                 border = BorderStroke(width = Dp(1f), color = Color.Gray)
             ) {
                 Column(
                     horizontalAlignment = Alignment.CenterHorizontally,
                     modifier = Modifier.fillMaxWidth()
                 ) {
+                    Spacer(modifier.padding(4.dp))
                     Text(
                         text = data.fileName,
-                        fontSize = TextUnit(value = 26f, type = TextUnitType.Sp)
+                        fontSize = TextUnit(value = 21f, type = TextUnitType.Sp)
                     )
-                    Spacer(modifier.padding(8.dp))
+                    Spacer(modifier.padding(4.dp))
                     Image(
                         vm.getImageFromFilename(data.fileName, context).asImageBitmap(),
                         "Default Description",
                         modifier = modifier
                             .background(color = Color.White)
-                            .height(Dp(180f))
-                            .width(Dp(180f))
+                            .height(Dp(120f))
+                            .width(Dp(120f))
                     )
+                    Spacer(modifier.padding(6.dp))
                 }
             }
         }
