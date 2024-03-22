@@ -18,14 +18,17 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
 import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
 import androidx.compose.foundation.lazy.staggeredgrid.rememberLazyStaggeredGridState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -109,7 +112,7 @@ class ArtGalleryScreen : Fragment() {
                             columns = StaggeredGridCells.Fixed(2),
                             modifier = Modifier.fillMaxSize(),
                             state = gridState,
-                            horizontalArrangement = Arrangement.spacedBy(10.dp),
+                            horizontalArrangement = Arrangement.spacedBy(0.dp),
                             content = {
                                 if (allDrawings != null) {
                                     items(allDrawings!!.size) {
@@ -139,12 +142,15 @@ class ArtGalleryScreen : Fragment() {
                 .wrapContentWidth()
                 .padding(horizontal = Dp(1f), vertical = Dp(3f))
         ) {
-            Button(onClick = {
+            OutlinedButton(onClick = {
                 Log.d("NAV", "Navigating from the gallery to drawing ${data.fileName}")
                 vm.currentFileName = data.fileName
                 vm.setBitmapImage(drawingImage)
                 findNavController().navigate(R.id.action_artGalleryScreen_to_drawScreen2)
-            }, content= {
+            },      shape = RoundedCornerShape(0),
+                    border = BorderStroke(0.dp, Color.White),
+                    modifier = Modifier.padding(0.dp).wrapContentSize(),
+                    content= {
                 Card(
                     modifier.padding(all = Dp(5f)),
                     border = BorderStroke(width = Dp(1f), color = Color.Gray)

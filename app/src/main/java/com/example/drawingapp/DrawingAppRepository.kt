@@ -51,7 +51,7 @@ class DrawingAppRepository(
      * @param image     - Drawing created by user
      * @param context   - Android thing for saving to files.
      */
-    fun saveImage(fileName: String, image: Bitmap, context: Context) {
+    fun saveImage(fileName: String, image: Bitmap, context: Context, isOverride: Boolean) {
         var success = true
 
         val outputStream = context.openFileOutput(fileName, Context.MODE_PRIVATE)
@@ -68,7 +68,7 @@ class DrawingAppRepository(
                 e.printStackTrace()
             }
             // Assuming the file actually got saved, send the filename to the DB
-            if (success) {
+            if (success && !isOverride) {
                 scope.launch {
                     dao.addDrawing(Drawing(fileName))
                 }

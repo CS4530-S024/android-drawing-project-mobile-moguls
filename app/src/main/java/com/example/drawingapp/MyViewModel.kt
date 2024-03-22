@@ -73,8 +73,8 @@ class MyViewModel(private val repository: DrawingAppRepository) : ViewModel() {
         return repository.loadImage(fileName, context!!)!!
     }
 
-    fun saveImage(fileName: String, context: Context?) {
-        repository.saveImage(fileName, _bitmap.value!!, context!!)
+    fun saveImage(fileName: String, context: Context?, isOverride: Boolean) {
+        repository.saveImage(fileName, _bitmap.value!!, context!!, isOverride)
     }
 
 }

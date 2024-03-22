@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.graphics.Bitmap
 import android.graphics.Color
 import android.graphics.Paint
+import android.graphics.Rect
 import android.graphics.RectF
 import android.os.Bundle
 import android.util.Log
@@ -71,9 +72,8 @@ class DrawScreen : Fragment() {
 
         binding.newDrawingButton.setOnClickListener {
             Log.d("DRAW", "Setting up new drawing.  Losing all unsaved progress..");
-            viewModel.setBitmapImage(Bitmap.createBitmap(500, 500, Bitmap.Config.ARGB_8888))
             viewModel.currentFileName = ""
-            binding.view.canvas.setBitmap(viewModel.bitmap.value!!)
+            drawOnCustomView(0f, 0f, 10000f, PenShape.Square, Color.WHITE.toColor())
             binding.view.invalidate()
         }
 

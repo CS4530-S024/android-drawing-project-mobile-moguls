@@ -85,12 +85,13 @@ class SaveScreen : Fragment() {
                     }
                 }
 
-
-                // Actually go save now that we know we're good
                 if (!taken) {
+                    // Actually go save now that we know we're good
+
+                    val is_override = (vm.currentFileName.isNotEmpty() && vm.currentFileName == currentFileNameInput)
                     vm.currentFileName = currentFileNameInput
                     Log.d("SAVE", "Saving file under name: $currentFileNameInput")
-                    vm.saveImage(currentFileNameInput, context)
+                    vm.saveImage(currentFileNameInput, context, is_override)
                     Log.d("SAVE", "Done saving file ($currentFileNameInput).  Navigating to draw")
                     findNavController().navigate(R.id.action_saveScreen2_to_drawScreen2)
                 }
