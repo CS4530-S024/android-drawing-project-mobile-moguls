@@ -20,7 +20,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.layout.wrapContentWidth
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
 import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
 import androidx.compose.foundation.lazy.staggeredgrid.rememberLazyStaggeredGridState
@@ -41,7 +40,6 @@ import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.TextUnitType
@@ -73,7 +71,6 @@ class ArtGalleryScreen : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-
         val view = inflater.inflate(R.layout.fragment_art_gallery_screen, container, false)
         val composeView = view.findViewById<ComposeView>(R.id.compose_view)
         composeView.apply {
@@ -85,57 +82,82 @@ class ArtGalleryScreen : Fragment() {
                 ) {
                     Column {
                         Spacer(Modifier.padding(15.dp))
-                        Row (Modifier.align(Alignment.CenterHorizontally)) {
-                            Button(onClick = {
-                                Log.d("NAV", "navigating to save screen 2")
-                                findNavController().navigate(R.id.action_artGalleryScreen_to_splashScreen)
-                            }, modifier=
-                                Modifier.background(color=MaterialTheme.colorScheme.background)
-                            ) {
-                                Text(text = "Back")
-                            }
-                            Spacer(modifier = Modifier.padding(64.dp))
-                            Button(onClick = {
-                                Log.d("NAV", "navigating to draw screen 2")
-                                findNavController().navigate(R.id.action_artGalleryScreen_to_drawScreen2)
-                            }
-                            ) {
-                                Text(text = "Draw Screen")
-                            }
+                        Row(Modifier.align(Alignment.CenterHorizontally)) {
+                            DisplayNavigation()
                         }
+                        Spacer(modifier = Modifier.padding(15.dp))
+                        DisplayCanvas()
 
-                        Spacer(modifier=Modifier.padding(15.dp))
-
-                        val allDrawings by vm.allDrawings.observeAsState()
-                        val gridState = rememberLazyStaggeredGridState()
-                        if (allDrawings != null && allDrawings!!.isNotEmpty()) {
-                            LazyVerticalStaggeredGrid(
-                                columns = StaggeredGridCells.Fixed(2),
-                                modifier = Modifier.fillMaxSize(),
-                                state = gridState,
-                                horizontalArrangement = Arrangement.spacedBy(0.dp),
-                                content = {
-                                    items(allDrawings!!.size) {
-                                        ListItem(allDrawings!![it])
-                                    }
-                                }
-                            )
-                        } else {
-                            Spacer(modifier=Modifier.padding(70.dp))
-                            Row(
-                                modifier=Modifier.fillMaxWidth().align(Alignment.End)
-                            ){
-                                Spacer(Modifier.weight(1f))
-                                Text(text="You have no drawings yet!", modifier=Modifier.align(Alignment.CenterVertically))
-                                Spacer(Modifier.weight(1f))
-                            }
-
-                        }
                     }
                 }
             }
             return view
         }
+    }
+
+    @Composable
+    fun DisplayNavigation() {
+        Button(
+            onClick = {
+                Log.d("NAV", "navigating to save screen")
+                findNavController().navigate(R.id.action_artGalleryScreen_to_splashScreen)
+            }, modifier =
+            Modifier.background(color = MaterialTheme.colorScheme.background)
+        ) {
+            Text(text = "Back")
+        }
+        Spacer(modifier = Modifier.padding(64.dp))
+        Button(onClick = {
+            Log.d("NAV", "navigating to draw screen")
+            findNavController().navigate(R.id.action_artGalleryScreen_to_drawScreen2)
+        }
+        ) {
+            Text(text = "Draw Screen")
+        }
+    }
+
+    @Preview(device = "id:pixel_3a")
+    @Composable
+    fun DisplayNavigationPreview() {
+        DisplayNavigation()
+    }
+
+    @Composable
+    fun DisplayCanvas() {
+        val allDrawings by vm.allDrawings.observeAsState()
+        val gridState = rememberLazyStaggeredGridState()
+        if (allDrawings != null && allDrawings!!.isNotEmpty()) {
+            LazyVerticalStaggeredGrid(
+                columns = StaggeredGridCells.Fixed(2),
+                modifier = Modifier.fillMaxSize(),
+                state = gridState,
+                horizontalArrangement = Arrangement.spacedBy(0.dp),
+                content = {
+                    items(allDrawings!!.size) {
+                        ListItem(allDrawings!![it])
+                    }
+                }
+            )
+        } else {
+            Spacer(modifier = Modifier.padding(70.dp))
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.End
+            ) {
+                Spacer(Modifier.weight(1f))
+                Text(
+                    text = "You have no drawings yet!",
+                    modifier = Modifier.align(Alignment.CenterVertically)
+                )
+                Spacer(Modifier.weight(1f))
+            }
+        }
+    }
+
+    @Preview(device = "id:pixel_3a")
+    @Composable
+    fun DisplayCanvasPreview() {
+        DisplayCanvas()
     }
 
     /**
@@ -145,7 +167,8 @@ class ArtGalleryScreen : Fragment() {
      */
     @Composable
     fun ListItem(data: Drawing, modifier: Modifier = Modifier) {
-        val drawingImage = vm.getImageFromFilename(data.fileName, context).copy(Bitmap.Config.ARGB_8888, true)
+        val drawingImage =
+            vm.getImageFromFilename(data.fileName, context).copy(Bitmap.Config.ARGB_8888, true)
         Row(
             modifier
                 .wrapContentWidth()
@@ -156,36 +179,49 @@ class ArtGalleryScreen : Fragment() {
                 vm.currentFileName = data.fileName
                 vm.setBitmapImage(drawingImage)
                 findNavController().navigate(R.id.action_artGalleryScreen_to_drawScreen2)
-            },      shape = RoundedCornerShape(0),
-                    border = BorderStroke(0.dp, Color.White),
-                    modifier = Modifier.padding(0.dp).wrapContentSize(),
-                    content= {
-                Card(
-                    modifier.padding(all = Dp(5f)),
-                    border = BorderStroke(width = Dp(1f), color = Color.Gray)
-                ) {
-                    Column(
-                        horizontalAlignment = Alignment.CenterHorizontally,
-                        modifier = Modifier.fillMaxWidth()
-                    ) {
-                        Spacer(modifier.padding(4.dp))
-                        Text(
-                            text = data.fileName,
-                            fontSize = TextUnit(value = 21f, type = TextUnitType.Sp)
-                        )
-                        Spacer(modifier.padding(4.dp))
-                        Image(
-                            drawingImage.asImageBitmap(),
-                            "Default Description",
-                            modifier = modifier
-                                .background(color = Color.White)
-                                .height(Dp(120f))
-                                .width(Dp(120f))
-                        )
-                        Spacer(modifier.padding(6.dp))
-                    } // End column
-                } // End card
-            }) // End button
+            }, shape = RoundedCornerShape(0),
+                border = BorderStroke(0.dp, Color.White),
+                modifier = Modifier
+                    .padding(0.dp)
+                    .wrapContentSize(),
+                content = {
+                    DisplayCard(modifier, data, drawingImage)
+                }) // End button
         }// End Row
     }// End List Item
+
+    @Composable
+    fun DisplayCard(modifier: Modifier = Modifier, data: Drawing, drawingImage: Bitmap) {
+        Card(
+            modifier.padding(all = Dp(5f)),
+            border = BorderStroke(width = Dp(1f), color = Color.Gray)
+        ) {
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Spacer(modifier.padding(4.dp))
+                Text(
+                    text = data.fileName,
+                    fontSize = TextUnit(value = 21f, type = TextUnitType.Sp)
+                )
+                Spacer(modifier.padding(4.dp))
+                Image(
+                    drawingImage.asImageBitmap(),
+                    "Default Description",
+                    modifier = modifier
+                        .background(color = Color.White)
+                        .height(Dp(120f))
+                        .width(Dp(120f))
+                )
+                Spacer(modifier.padding(6.dp))
+            }
+        }
+    }
+
+    /*@Preview(device = "id:pixel_3a")
+    @Composable
+    fun DisplayCardPreview() {
+        DisplayCard(modifier: Modifier = Modifier, data: Drawing, drawingImage: Bitmap)
+    }*/
 }// End screen class
