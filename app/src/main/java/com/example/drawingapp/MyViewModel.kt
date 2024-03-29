@@ -53,6 +53,7 @@ class MyViewModel(private val repository: DrawingAppRepository) : ViewModel() {
 
     var currentFileName: String = ""
     var screenWidth = 500
+    // TODO - unhardcode this
 
     fun setPenSize(newSize: PenSize) {
         _penSize.value = newSize

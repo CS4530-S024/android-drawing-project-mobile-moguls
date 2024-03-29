@@ -53,7 +53,7 @@ import androidx.navigation.fragment.findNavController
 /**
  * @author          - Christian E. Anderson
  * @teammate(s)     - Crosby White & Matthew Williams
- * @version         - Phase 2 = 22-MAR-2024; Phase 1 = 16-FEB-2024
+ * @version         - Phase 2.5 = 05-Apr-2024; Phase 2 = 22-MAR-2024; Phase 1 = 16-FEB-2024
  *
  *      This file defines the art gallery screen for the Drawing App.
  *

@@ -13,18 +13,15 @@ import com.example.drawingapp.databinding.FragmentSplashScreenBinding
 /**
  * @author          - Christian E. Anderson
  * @teammate        - Crosby White & Matthew Williams
- * @version         - 16-FEB-2024
+ * @version         - Phase 2.5 = 05-Apr-2024; Phase 2 = 22-MAR-2024; Phase 1 = 16-FEB-2024
  *
+ * File Contents:
  *      This file defines the splash screen for the Drawing App.
- */
-
-/**
- *
  */
 @SuppressLint("CustomSplashScreen")
 class SplashScreen : Fragment() {
     /**
-     *
+     * This method constructs the view for this screen.
      */
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -33,15 +30,15 @@ class SplashScreen : Fragment() {
 
         val binding = FragmentSplashScreenBinding.inflate(layoutInflater, container, false)
 
-        // Switch to main screen
+        // Switches to art gallery screen
         binding.mainScreenButton.setOnClickListener {
-            Log.d("NAV", "navigating to main screen")
+            Log.d("NAV", "navigating to art gallery screen")
             findNavController().navigate(R.id.action_splashScreen_to_artGalleryScreen)
         }
 
-        // Switch to draw screen
+        // Switches to drawing canvas screen
         binding.drawScreenButton.setOnClickListener {
-            Log.d("NAV", "navigating to draw screen")
+            Log.d("NAV", "navigating to drawing canvas screen")
             findNavController().navigate(R.id.action_splashScreen_to_drawScreen2)
         }
         return binding.root
