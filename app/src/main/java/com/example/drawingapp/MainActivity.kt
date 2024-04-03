@@ -25,6 +25,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
+
         val myViewModel: MyViewModel by viewModels {
             DrawingAppViewModelFactory((application as DrawingAppApplication).drawingAppRepository)
         }
