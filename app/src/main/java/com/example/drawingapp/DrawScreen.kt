@@ -36,9 +36,7 @@ class DrawScreen : Fragment() {
 
     private val viewModel: MyViewModel by activityViewModels()
     private val binding: FragmentDrawScreenBinding by lazy {
-        FragmentDrawScreenBinding.inflate(
-            layoutInflater
-        )
+        FragmentDrawScreenBinding.inflate(layoutInflater)
     }
     private var touchCoordinateScalar: Float = 1F
 
