@@ -7,12 +7,15 @@ plugins {
     id("org.jetbrains.kotlin.android")
 
     id("com.google.devtools.ksp")
+    // Add the Google services Gradle plugin
+    id("com.google.gms.google-services")
 
 }
 
 android {
     namespace = "com.example.drawingapp"
     compileSdk = 34
+    //ndkVersion = "25.8937393"
 
     defaultConfig {
         applicationId = "com.example.drawingapp"
@@ -110,4 +113,18 @@ dependencies {
     implementation("androidx.room:room-common:2.6.1")
     ksp("androidx.room:room-compiler:2.6.1")
     implementation("androidx.room:room-ktx:2.6.1")
+
+
+    // Import the Firebase BoM
+    implementation(platform("com.google.firebase:firebase-bom:32.8.1"))
+
+    // When using the BoM, you don't specify versions in Firebase library dependencies
+
+    // Add the dependency for the Firebase SDK for Google Analytics
+    implementation("com.google.firebase:firebase-analytics")
+
+    // See https://firebase.google.com/docs/android/setup#available-libraries
+    // For example, add the dependencies for Firebase Authentication and Cloud Firestore
+    implementation("com.google.firebase:firebase-auth")
+    implementation("com.google.firebase:firebase-firestore")
 }
