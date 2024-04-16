@@ -16,11 +16,11 @@ import com.example.drawingapp.databinding.FragmentSaveScreenBinding
 /**
  * @author          - Christian E. Anderson
  * @teammate(s)     - Crosby White & Matthew Williams
- * @version         - Phase 2 = 22-MAR-2024; Phase 1 = 16-FEB-2024
+ * @version         - Phase 3 = 19-APR-2024; Phase 2 = 22-MAR-2024; Phase 1 = 16-FEB-2024
  *
  *      This file defines the saving screen for the Drawing App.
  *
- *  Phase 2:
+ *  Phase 3: Add firebase authentication and image cloud storage.
  *
  */
 class SaveScreen : Fragment() {
@@ -88,10 +88,11 @@ class SaveScreen : Fragment() {
                 if (!taken) {
                     // Actually go save now that we know we're good
 
-                    val is_override = (vm.currentFileName.isNotEmpty() && vm.currentFileName == currentFileNameInput)
+                    val isOverride =
+                        (vm.currentFileName.isNotEmpty() && vm.currentFileName == currentFileNameInput)
                     vm.currentFileName = currentFileNameInput
                     Log.d("SAVE", "Saving file under name: $currentFileNameInput")
-                    vm.saveImage(currentFileNameInput, context, is_override)
+                    vm.saveImage(currentFileNameInput, context, isOverride)
                     Log.d("SAVE", "Done saving file ($currentFileNameInput).  Navigating to draw")
                     findNavController().navigate(R.id.action_saveScreen2_to_drawScreen2)
                 }
