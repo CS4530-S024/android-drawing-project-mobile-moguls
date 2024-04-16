@@ -1,5 +1,5 @@
 package com.example.drawingapp
-
+/*
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.os.Bundle
@@ -172,4 +172,4 @@ class CloudSavingScreen : Fragment() {
         }
         return view
     }
-}
+}*/

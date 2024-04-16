@@ -2,7 +2,9 @@ package com.example.drawingapp
 
 import android.content.Context
 import android.graphics.Bitmap
+import android.graphics.Canvas
 import android.graphics.Color
+import android.graphics.Paint
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -37,7 +39,7 @@ enum class PenShape {
 class MyViewModel(private val repository: DrawingAppRepository) : ViewModel() {
 
     private val _bitmap: MutableLiveData<Bitmap> = MutableLiveData(
-        Bitmap.createBitmap(500, 500, Bitmap.Config.ARGB_8888))
+        createSolidBitmap())
     val bitmap = _bitmap as LiveData<Bitmap>
 
     private var _penSize: MutableLiveData<PenSize> = MutableLiveData(PenSize.Medium)
@@ -77,6 +79,21 @@ class MyViewModel(private val repository: DrawingAppRepository) : ViewModel() {
 
     fun saveImage(fileName: String, context: Context?, isOverride: Boolean) {
         repository.saveImage(fileName, _bitmap.value!!, context!!, isOverride)
+    }
+
+    private external fun blurImage(bitmap: Bitmap);
+
+    fun doBlurImage() {
+        _bitmap.value?.let { blurImage(it) };
+    }
+
+    private fun createSolidBitmap(): Bitmap {
+        val b = Bitmap.createBitmap(500, 500, Bitmap.Config.ARGB_8888)
+        val c = Canvas(b)
+        val p = Paint()
+        p.color = Color.WHITE
+        c.drawRect(0F, 0F, 500F, 500F, p)
+        return b
     }
 
 }

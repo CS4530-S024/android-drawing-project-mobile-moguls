@@ -96,7 +96,12 @@ class DrawScreen : Fragment() {
         binding.ovalShapeButton.setOnClickListener {
             viewModel.setPenShape(PenShape.Oval)
         }
-        binding.squareShapeButton.setOnClickListener { viewModel.setPenShape(PenShape.Square) }
+        binding.squareShapeButton.setOnClickListener {
+            viewModel.setPenShape(PenShape.Square)
+            // TEMPORARY TEST CODE - Easier than adding a test button
+            viewModel.doBlurImage()
+            // END TEMPORARY TEST CODE
+        }
 
         // Set the color picker's listener and default color
         binding.colorPickerView.setInitialColor(Color.BLUE)

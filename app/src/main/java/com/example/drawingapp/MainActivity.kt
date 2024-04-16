@@ -1,5 +1,6 @@
 package com.example.drawingapp
 
+import android.graphics.Bitmap
 import android.os.Bundle
 import android.util.DisplayMetrics
 import android.util.Log
@@ -38,5 +39,11 @@ class MainActivity : AppCompatActivity() {
         myViewModel.screenWidth = windowManager.currentWindowMetrics.bounds.width()
 
         setContentView(R.layout.activity_main)
+    }
+
+    companion object {
+        init {
+            System.loadLibrary("drawingapp");
+        }
     }
 }
