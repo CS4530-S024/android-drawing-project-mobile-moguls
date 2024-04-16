@@ -23,5 +23,6 @@
     <string name="go_to_draw_screen">Back to Drawing</string>
     <string name="go_to_art_gallery">Go to Art Gallery</string>
     <string name="file_name">File Name</string>
-    <string name="save_image">Save Image</string>
+    <string name="save_drawing">Save Drawing</string>
+    <string name="save_to_cloud">Save to Cloud</string>
 </resources>

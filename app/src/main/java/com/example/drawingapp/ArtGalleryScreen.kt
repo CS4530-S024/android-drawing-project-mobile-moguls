@@ -39,11 +39,14 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.platform.ViewCompositionStrategy
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.TextUnitType
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
@@ -81,13 +84,30 @@ class ArtGalleryScreen : Fragment() {
                     color = MaterialTheme.colorScheme.background
                 ) {
                     Column {
+                        Row(
+                            Modifier
+                                .align(Alignment.CenterHorizontally)
+                                .padding(15.dp)
+                        ) {
+                            Text(
+                                text = "Art Gallery",
+                                style = TextStyle(
+                                    fontSize = 24.sp,
+                                    fontWeight = FontWeight.Bold)
+                            )
+                        }
                         Spacer(Modifier.padding(15.dp))
+                        Row(
+                            Modifier
+                                .align(Alignment.CenterHorizontally)
+                                .weight(1f)
+                        ) {
+                            DisplayCanvas()
+                            // HorizontalDivider(color = Color.Gray, thickness = 2.dp)
+                        }
                         Row(Modifier.align(Alignment.CenterHorizontally)) {
                             DisplayNavigation()
                         }
-                        Spacer(modifier = Modifier.padding(15.dp))
-                        DisplayCanvas()
-
                     }
                 }
             }
@@ -99,12 +119,12 @@ class ArtGalleryScreen : Fragment() {
     fun DisplayNavigation() {
         Button(
             onClick = {
-                Log.d("NAV", "navigating to save screen")
+                Log.d("NAV", "navigating to menu screen")
                 findNavController().navigate(R.id.action_artGalleryScreen_to_splashScreen)
             }, modifier =
             Modifier.background(color = MaterialTheme.colorScheme.background)
         ) {
-            Text(text = "Back")
+            Text(text = "Back to Menu")
         }
         Spacer(modifier = Modifier.padding(64.dp))
         Button(onClick = {
@@ -112,7 +132,7 @@ class ArtGalleryScreen : Fragment() {
             findNavController().navigate(R.id.action_artGalleryScreen_to_drawScreen2)
         }
         ) {
-            Text(text = "Draw Screen")
+            Text(text = "New Drawing")
         }
     }
 

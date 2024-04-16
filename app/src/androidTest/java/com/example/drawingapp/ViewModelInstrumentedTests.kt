@@ -48,6 +48,10 @@ class ExampleInstrumentedTest {
         composeTestRule.onNodeWithTag("mainScreenButton").performClick()
     }
 
+    fun saveImageTest() {
+
+    }
+
     /*private val repository: DrawingAppRepository
 
     // Tests that setting the pen size works

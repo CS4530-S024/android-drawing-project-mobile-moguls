@@ -2,6 +2,7 @@ package com.example.drawingapp
 
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.click
+import androidx.test.espresso.assertion.ViewAssertions.doesNotExist
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.withId
@@ -38,5 +39,12 @@ class EspressoTests {
         onView(withText("Start Drawing")).perform(click())
         onView(withText("Main Screen")).perform(click())
         onView(withText("Go to Save Screen")).perform(click())
+    }
+
+    @Test
+    fun testSplashScreenToGallery() {
+        onView(withId(R.id.splashTitle)).check(matches(isDisplayed()))
+        onView(withId(R.id.mainScreenButton)).perform(click())
+        onView(withId(R.id.splashTitle)).check(doesNotExist())
     }
 }
