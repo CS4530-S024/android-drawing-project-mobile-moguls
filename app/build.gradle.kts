@@ -87,6 +87,7 @@ dependencies {
     implementation("androidx.compose.ui:ui-graphics:1.6.4")
     implementation("androidx.compose.ui:ui-tooling-preview")
     implementation("androidx.compose.material3:material3:1.2.1")
+    implementation("com.google.firebase:firebase-storage-ktx:20.3.0")
 
     // Testing
     testImplementation("junit:junit:4.13.2")

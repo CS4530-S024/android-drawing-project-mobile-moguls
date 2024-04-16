@@ -67,7 +67,22 @@
             android:layout_marginTop="20dp"
             android:layout_marginEnd="80dp"
             android:layout_weight="1"
-            android:text="@string/save_image" />
+            android:text="@string/save_drawing" />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/cloudStorageButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="80dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="80dp"
+            android:layout_weight="1"
+            android:text="@string/save_to_cloud"/>
     </LinearLayout>
 
     <TextView
