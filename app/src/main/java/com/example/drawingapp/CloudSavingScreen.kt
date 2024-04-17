@@ -14,7 +14,9 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Button
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Surface
@@ -26,9 +28,11 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.platform.ComposeView
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.fragment.app.Fragment
@@ -42,14 +46,7 @@ import java.util.Date
 
 class CloudSavingScreen : Fragment() {
     private lateinit var auth: FirebaseAuth
-    override fun onStart() {
-        super.onStart()
-        // Check if user is signed in (non-null) and update UI accordingly.
-        val currentUser = auth.currentUser
-        if (currentUser != null) {
 
-        }
-    }
     /**
      * Defines what the view will look at creation.
      */
@@ -97,6 +94,14 @@ class CloudSavingScreen : Fragment() {
                                     value = email,
                                     onValueChange = { email = it },
                                     label = { Text("Email") })
+                                Spacer(modifier = Modifier.padding(5.dp))
+                                Text(
+
+                                    text = "Passwords must be 6 or more characters",
+                                    style = TextStyle(
+                                        fontSize = 12.sp
+                                    )
+                                )
                                 OutlinedTextField(
                                     value = password,
                                     onValueChange = { password = it },
@@ -145,8 +150,35 @@ class CloudSavingScreen : Fragment() {
                                 }
                             }
 
-                        } else { // User is logged in, show the main content
-                            Text("Welcome ${user!!.email} with id: ${user!!.uid}")
+                        } else {
+                            Toast.makeText(
+                                requireContext(),
+                                "Login Successful!",
+                                Toast.LENGTH_LONG
+                            ).show()
+                            Log.d("User logged In", "${user!!.email} logged in")
+                            Button(onClick = {
+                                Log.d("NAV", "navigating to save screen")
+                                findNavController().navigate(R.id.action_cloud_saving_screen_to_saveScreen2)
+                            }
+                            ) {
+                                Text("Back")
+                            }
+                            Spacer(modifier = Modifier.padding(15.dp))
+
+                            Row {
+                                Text(
+                                    text = "${user!!.email}'s Cloud",
+                                    style = TextStyle(
+                                        fontSize = 24.sp,
+                                        textAlign = TextAlign.Center
+                                    ),
+                                    modifier = Modifier.width(LocalConfiguration.current.screenWidthDp.dp)
+                                )
+                            }
+                            Row {
+                                HorizontalDivider(thickness = 2.dp)
+                            }
                             var dataString by remember { mutableStateOf("") }
 
                             // probably bad to do this in a composable
@@ -162,9 +194,9 @@ class CloudSavingScreen : Fragment() {
                                 .addOnFailureListener { exception ->
                                     Log.w("Uh oh", "Error getting documents.", exception)
                                 }
-                            Text("Data string: $dataString")
 
                             // store a document to a user-private collection in fire-store
+                            // TODO - Update to upload an image
                             Button(onClick = {
                                 val document = mapOf(
                                     "My uid" to user!!.uid,
@@ -176,9 +208,10 @@ class CloudSavingScreen : Fragment() {
                                     .addOnSuccessListener { Log.e("UPLOAD", "SUCCESSFUL!") }
                                     .addOnFailureListener { e -> Log.e("UPLOAD", "FAILED!: $e") }
                             }) {
-                                Text("Post data!")
+                                Text("Upload to Cloud")
                             }
 
+                            // TODO - Move to Art Gallery Screen (?)
                             // download and show the image saved in fire-store if possible
                             var downloadedBitmap by remember { mutableStateOf<Bitmap?>(null) }
                             val ref = Firebase.storage.reference
