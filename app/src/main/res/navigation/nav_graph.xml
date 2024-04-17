@@ -66,5 +66,8 @@
         android:name="com.example.drawingapp.CloudSavingScreen"
         android:label="fragment_cloud_saving_screen"
         tools:layout="@layout/fragment_cloud_saving_screen">
+        <action
+            android:id="@+id/action_cloud_saving_screen_to_drawScreen2"
+            app:destination="@id/drawScreen2" />
     </fragment>
 </navigation>
