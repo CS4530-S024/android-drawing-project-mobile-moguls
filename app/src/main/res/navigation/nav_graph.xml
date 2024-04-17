@@ -69,5 +69,8 @@
         <action
             android:id="@+id/action_cloud_saving_screen_to_drawScreen2"
             app:destination="@id/drawScreen2" />
+        <action
+            android:id="@+id/action_cloud_saving_screen_to_saveScreen2"
+            app:destination="@id/saveScreen2" />
     </fragment>
 </navigation>

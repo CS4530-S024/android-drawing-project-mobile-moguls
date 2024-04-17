@@ -17,7 +17,7 @@
             android:id="@+id/imageView"
             android:layout_width="match_parent"
             android:layout_height="334dp"
-            android:contentDescription="@string/mobile_moguels_company_logo"
+            android:contentDescription="@string/mobile_moguls_company_logo"
             app:srcCompat="@drawable/company_logo" />
 
         <TextView
@@ -25,14 +25,14 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:text="@string/mobile_moguel_s_drawing_app"
+            android:text="@string/mobile_moguls_drawing_app"
             android:textAlignment="center"
             android:textAllCaps="false"
-            android:textSize="48sp" />
+            android:textSize="40sp" />
 
         <Space
             android:layout_width="match_parent"
-            android:layout_height="75dp" />
+            android:layout_height="200dp" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -44,6 +44,7 @@
 
             <Button
                 android:id="@+id/drawScreenButton"
+                style="?android:attr/buttonBarButtonStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
@@ -56,6 +57,7 @@
 
             <Button
                 android:id="@+id/mainScreenButton"
+                style="?android:attr/buttonBarButtonStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
@@ -78,7 +80,7 @@
                 android:layout_marginTop="24dp"
                 android:foregroundGravity="bottom"
                 android:gravity="bottom"
-                android:text="@string/mobile_moguels_2024_v_0_0_15"
+                android:text="@string/mobile_moguls_2024_v_0_0_15"
                 android:textSize="14sp"
                 android:textStyle="italic" />
         </LinearLayout>
