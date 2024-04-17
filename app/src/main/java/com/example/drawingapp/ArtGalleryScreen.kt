@@ -1,6 +1,7 @@
 package com.example.drawingapp
 
 import android.graphics.Bitmap
+import android.graphics.Paint.Style
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -117,7 +118,7 @@ class ArtGalleryScreen : Fragment() {
 
     @Composable
     fun DisplayNavigation() {
-        Button(
+        OutlinedButton(
             onClick = {
                 Log.d("NAV", "navigating to menu screen")
                 findNavController().navigate(R.id.action_artGalleryScreen_to_splashScreen)
@@ -127,7 +128,7 @@ class ArtGalleryScreen : Fragment() {
             Text(text = "Back to Menu")
         }
         Spacer(modifier = Modifier.padding(64.dp))
-        Button(onClick = {
+        OutlinedButton(onClick = {
             Log.d("NAV", "navigating to draw screen")
             findNavController().navigate(R.id.action_artGalleryScreen_to_drawScreen2)
         }
