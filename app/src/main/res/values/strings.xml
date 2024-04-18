@@ -27,4 +27,8 @@
     <string name="save_to_cloud">Save to Cloud</string>
     <string name="save_to_local" />
     <string name="save_to_device">Save to Device</string>
+    <string name="extra_tools">Extra Tools:</string>
+    <string name="blur">Blur</string>
+    <string name="invert">Invert</string>
+    <string name="new_drawing">New Drawing</string>
 </resources>

@@ -23,7 +23,7 @@ class DrawingView(context: Context, attrs: AttributeSet) : View(context, attrs) 
     private val paint = Paint()
     private lateinit var drawingBitmap: Bitmap
     var canvas = Canvas()
-    var widthChecked: Boolean = false
+    private var widthChecked: Boolean = false
 
     // This will get overridden in the instantiateRect method
     private var destRect: Rect = Rect(0, 0, 500, 500)

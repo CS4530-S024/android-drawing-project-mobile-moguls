@@ -1,8 +1,6 @@
 package com.example.drawingapp
 
-import android.graphics.Bitmap
 import android.os.Bundle
-import android.util.DisplayMetrics
 import android.util.Log
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -43,7 +41,7 @@ class MainActivity : AppCompatActivity() {
 
     companion object {
         init {
-            System.loadLibrary("drawingapp");
+            System.loadLibrary("drawingapp")
         }
     }
 }

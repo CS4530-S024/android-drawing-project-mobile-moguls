@@ -8,6 +8,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
@@ -94,6 +95,11 @@ class SaveScreen : Fragment() {
                     Log.d("SAVE", "Saving file under name: $currentFileNameInput")
                     vm.saveImage(currentFileNameInput, context, isOverride)
                     Log.d("SAVE", "Done saving file ($currentFileNameInput).  Navigating to draw")
+                    Toast.makeText(
+                        requireContext(),
+                        "Drawing saved to gallery!",
+                        Toast.LENGTH_SHORT
+                    ).show()
                     findNavController().navigate(R.id.action_saveScreen2_to_drawScreen2)
                 }
             }

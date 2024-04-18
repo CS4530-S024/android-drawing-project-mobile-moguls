@@ -1,14 +1,10 @@
 package com.example.drawingapp
 
 import android.annotation.SuppressLint
-import android.content.Context
-import android.graphics.Bitmap
 import android.graphics.Color
 import android.graphics.Paint
-import android.graphics.Rect
 import android.graphics.RectF
 import android.os.Bundle
-import android.util.AttributeSet
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.MotionEvent
@@ -74,7 +70,7 @@ class DrawScreen : Fragment() {
         }
 
         binding.newDrawingButton.setOnClickListener {
-            Log.d("DRAW", "Setting up new drawing.  Losing all unsaved progress..");
+            Log.d("DRAW", "Setting up new drawing.  Losing all unsaved progress..")
             viewModel.currentFileName = ""
             drawOnCustomView(0f, 0f, 10000f, PenShape.Square, Color.WHITE.toColor())
             binding.view.invalidate()

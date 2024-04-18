@@ -31,7 +31,6 @@ class DrawingAppRepository(
     /**
      * This function loads the drawing that is clicked
      * @param fileName - Name of file defined by user
-     * @param image - Drawing created by user
      */
     fun loadImage(fileName: String, context: Context): Bitmap? {
         val inputStream: FileInputStream

@@ -81,15 +81,15 @@ class MyViewModel(private val repository: DrawingAppRepository) : ViewModel() {
         repository.saveImage(fileName, _bitmap.value!!, context!!, isOverride)
     }
 
-    private external fun blurImage(bitmap: Bitmap);
-    private external fun invertImage(bitmap: Bitmap);
+    private external fun blurImage(bitmap: Bitmap)
+    private external fun invertImage(bitmap: Bitmap)
 
     fun doBlurImage() {
-        _bitmap.value?.let { blurImage(it) };
+        _bitmap.value?.let { blurImage(it) }
     }
 
     fun doImageInvert() {
-        _bitmap.value?.let { invertImage(it) };
+        _bitmap.value?.let { invertImage(it) }
     }
 
     private fun createSolidBitmap(): Bitmap {
