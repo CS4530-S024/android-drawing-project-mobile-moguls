@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -107,7 +108,15 @@ class SaveScreen : Fragment() {
         binding.cloudStorageButton.setOnClickListener {
             Log.d("CLOUD", "Switching the cloud saving screen")
             vm.currentFileName = currentFileNameInput
-            findNavController().navigate(R.id.action_saveScreen2_to_cloud_saving_screen)
+            if (vm.currentFileName.isEmpty()) {
+                Toast.makeText(
+                    requireContext(),
+                    "Please enter a file name!",
+                    Toast.LENGTH_SHORT
+                ).show()
+            } else {
+                findNavController().navigate(R.id.action_saveScreen2_to_cloud_saving_screen)
+            }
         }
         return binding.root
     }
