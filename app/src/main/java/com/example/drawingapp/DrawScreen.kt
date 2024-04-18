@@ -99,8 +99,13 @@ class DrawScreen : Fragment() {
         binding.squareShapeButton.setOnClickListener {
             viewModel.setPenShape(PenShape.Square)
             // TEMPORARY TEST CODE - Easier than adding a test button
-            viewModel.doBlurImage()
             // END TEMPORARY TEST CODE
+        }
+        binding.blurButton.setOnClickListener {
+            viewModel.doBlurImage()
+        }
+        binding.invertButton.setOnClickListener {
+            viewModel.doImageInvert()
         }
 
         // Set the color picker's listener and default color

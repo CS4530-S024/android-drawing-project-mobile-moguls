@@ -43,6 +43,16 @@ static uint32_t pack_rgba(int red, int green, int blue, int alpha) {
             0xFF000000);
 }
 
+static int rgb_clamp(int value) {
+    if(value > 255) {
+        return 255;
+    }
+    if(value < 0) {
+        return 0;
+    }
+    return value;
+}
+
 static void apply_image_transform(AndroidBitmapInfo* info, void* pixels, uint32_t* newVals, int newValsSize) {
     int w = info->width - 4;
     int h = info->height - 4;
@@ -54,6 +64,7 @@ static void apply_image_transform(AndroidBitmapInfo* info, void* pixels, uint32_
         *GET_PIXEL_PTR(info, pixels, x, y) = newVals[i];
     }
 }
+
 
 static int32_t get_average_val(AndroidBitmapInfo* info, void* pixels, int x, int y) {
     int sum_red, sum_green, sum_blue, sum_alpha, red, green, blue;
@@ -92,6 +103,47 @@ static int32_t get_average_val(AndroidBitmapInfo* info, void* pixels, int x, int
     return pack_rgba(sum_red, sum_green, sum_blue, sum_alpha);
 }
 
+/**
+ * Method to invert the values of the pixels to be used in do in doActualInvert
+ * @param info
+ * @param pixels
+ * @param x
+ * @param y
+ * @return
+ */
+static int32_t invert_pixel_val(AndroidBitmapInfo* info, void* pixels, int x, int y) {
+    int alpha, red, green, blue;
+    red = 0;
+    green = 0;
+    blue = 0;
+    alpha = 0;
+    for (int yy = y-2; yy < y+2; yy++) {
+        for (int xx = x-2; xx < x+2; xx++) {
+
+            uint32_t p = *GET_PIXEL_PTR(info, pixels, xx, yy);
+            if (p >> 24 < 100) {
+                alpha = 255;
+                red = 255;
+                green = 255;
+                blue = 255;
+            } else {
+                alpha = (int) (p >> 24);
+                red = (int) ((p & 0x00FF0000) >> 16);
+                green = (int)((p & 0x0000FF00) >> 8);
+                blue = (int) (p & 0x00000FF );
+            }
+        }
+    }
+
+    // If the values of any of the colors exceed 255, then they are set to 255.
+    if (red > 255) red = 255;
+    if (green > 255) green = 255;
+    if (blue > 255) blue = 255;
+
+    // Returns the pixel values subtracted from 255 to get the inversion of each pixel's value.
+    return pack_rgba(255 - red, 255 - green, 255 - blue, alpha);
+}
+
 
 static void doActualBlur(AndroidBitmapInfo* info, void* pixels) {
     int red, green, blue;
@@ -115,8 +167,34 @@ static void doActualBlur(AndroidBitmapInfo* info, void* pixels) {
 
 } // End blurImage def
 
+/**
+ * Method to apply inverted pixel values to bitmap
+ * @param info - A bitmap to alter
+ * @param pixels
+ */
+static void doActualInvert(AndroidBitmapInfo* info, void* pixels){
+    int red, green, blue;
+    int w = info->width - 4;
+    int h = info->height - 4;
+    int newValsSize = w * h;
+    uint32_t newVals[newValsSize];
+    uint32_t* line;
+    int v_i = 0;
+    for (int y = 2; y < info->height - 2; y++) {
+        line = GET_ROW(pixels, info->stride, y);
 
-extern "C" JNIEXPORT void JNICALL Java_com_example_drawingapp_MyViewModel_blurImage(JNIEnv * env, jobject  obj, jobject bitmap, jfloat brightnessValue) {
+        for (int x = 2; x < info->width - 2; x++) {
+            newVals[v_i] = invert_pixel_val(info, pixels, x, y);
+
+            v_i ++;
+        } // End x loop
+    } // End y loop
+
+    apply_image_transform(info, pixels, newVals, newValsSize);
+}
+
+
+extern "C" JNIEXPORT void JNICALL Java_com_example_drawingapp_MyViewModel_blurImage(JNIEnv * env, jobject  obj, jobject bitmap) {
 
     AndroidBitmapInfo info;
     int ret;
@@ -141,6 +219,33 @@ extern "C" JNIEXPORT void JNICALL Java_com_example_drawingapp_MyViewModel_blurIm
 
     AndroidBitmap_unlockPixels(env, bitmap);
 
+}
+
+extern "C" {
+JNIEXPORT void JNICALL Java_com_example_drawingapp_MyViewModel_invertImage(JNIEnv * env, jobject  obj, jobject bitmap)
+{
+
+    AndroidBitmapInfo  info;
+    int ret;
+    void* pixels;
+
+    if ((ret = AndroidBitmap_getInfo(env, bitmap, &info)) < 0) {
+        LOGE("AndroidBitmap_getInfo() failed ! error=%d", ret);
+        return;
+    }
+    if (info.format != ANDROID_BITMAP_FORMAT_RGBA_8888) {
+        LOGE("Bitmap format is not RGBA_8888 !");
+        return;
+    }
+
+    if ((ret = AndroidBitmap_lockPixels(env, bitmap, &pixels)) < 0) {
+        LOGE("AndroidBitmap_lockPixels() failed ! error=%d", ret);
+    }
+
+    doActualInvert(&info,pixels);
+
+    AndroidBitmap_unlockPixels(env, bitmap);
+}
 }
 
 
