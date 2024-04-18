@@ -39,7 +39,8 @@ enum class PenShape {
 class MyViewModel(private val repository: DrawingAppRepository) : ViewModel() {
 
     private val _bitmap: MutableLiveData<Bitmap> = MutableLiveData(
-        createSolidBitmap())
+        createSolidBitmap()
+    )
     val bitmap = _bitmap as LiveData<Bitmap>
 
     private var _penSize: MutableLiveData<PenSize> = MutableLiveData(PenSize.Medium)
@@ -48,12 +49,13 @@ class MyViewModel(private val repository: DrawingAppRepository) : ViewModel() {
     private var _penShape: MutableLiveData<PenShape> = MutableLiveData(PenShape.Circle)
     var penShape = _penShape as LiveData<PenShape>
 
-    private var _penColor : MutableLiveData<Color> = MutableLiveData(Color.valueOf(Color.RED))
+    private var _penColor: MutableLiveData<Color> = MutableLiveData(Color.valueOf(Color.RED))
     var penColor = _penColor as LiveData<Color>
 
     var allDrawings: LiveData<List<Drawing>> = repository.allDrawings.asLiveData()
 
     var currentFileName: String = ""
+
     // This gets set at the start of MainActivity.kt
     var screenWidth = 0
 
@@ -64,7 +66,7 @@ class MyViewModel(private val repository: DrawingAppRepository) : ViewModel() {
     fun setPenShape(newShape: PenShape) {
         _penShape.value = newShape
     }
-    
+
     fun setPenColor(newColor: Color) {
         _penColor.value = newColor
     }
@@ -73,7 +75,7 @@ class MyViewModel(private val repository: DrawingAppRepository) : ViewModel() {
         _bitmap.value = newImage
     }
 
-    fun getImageFromFilename(fileName: String, context: Context?) : Bitmap {
+    fun getImageFromFilename(fileName: String, context: Context?): Bitmap {
         return repository.loadImage(fileName, context!!)!!
     }
 
@@ -106,7 +108,8 @@ class MyViewModel(private val repository: DrawingAppRepository) : ViewModel() {
 /**
  *
  */
-class DrawingAppViewModelFactory(private val repository: DrawingAppRepository) : ViewModelProvider.Factory {
+class DrawingAppViewModelFactory(private val repository: DrawingAppRepository) :
+    ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(MyViewModel::class.java)) {
             @Suppress("UNCHECKED_CAST")

@@ -106,6 +106,7 @@ class SaveScreen : Fragment() {
         }
         binding.cloudStorageButton.setOnClickListener {
             Log.d("CLOUD", "Switching the cloud saving screen")
+            vm.currentFileName = currentFileNameInput
             findNavController().navigate(R.id.action_saveScreen2_to_cloud_saving_screen)
         }
         return binding.root
