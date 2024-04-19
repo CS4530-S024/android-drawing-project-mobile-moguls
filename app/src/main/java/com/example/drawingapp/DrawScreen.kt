@@ -99,9 +99,11 @@ class DrawScreen : Fragment() {
         }
         binding.blurButton.setOnClickListener {
             viewModel.doBlurImage()
+            binding.view.invalidate();
         }
         binding.invertButton.setOnClickListener {
             viewModel.doImageInvert()
+            binding.view.invalidate();
         }
 
         // Set the color picker's listener and default color

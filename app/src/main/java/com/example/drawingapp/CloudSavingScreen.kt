@@ -59,6 +59,7 @@ import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.auth
+import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.firestore
 import com.google.firebase.storage.component1
 import com.google.firebase.storage.component2
@@ -74,13 +75,13 @@ import java.util.Date
  *      This file defines the cloud saving screen for the Drawing App.
  *
  *  Phase 3: Add firebase authentication, image cloud storage, and displaying images in cloud storage.
- *s
+ *
  */
 class CloudSavingScreen : Fragment() {
     private lateinit var auth: FirebaseAuth
 
     /**
-     * Defines what the view will look at creation.
+     * Defines what the view will look like at creation.
      */
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -233,50 +234,16 @@ class CloudSavingScreen : Fragment() {
                                     contentDescription = null
                                 )
                             }
-                            // store a document to a user-private collection in fire-store
+                            // store a document to a collection in fire-store
                             Button(onClick = {
-                                val document = mapOf(
-                                    "My uid" to user!!.uid,
-                                    "time" to Date(),
-                                    "filename" to vm.currentFileName,
-                                    "drawing" to vm.getImageFromFilename(
-                                        vm.currentFileName,
-                                        requireContext()
-                                    )
-                                )
-                                // converts bitmap into png
-                                val baos = ByteArrayOutputStream()
-                                vm.bitmap.value!!.compress(Bitmap.CompressFormat.PNG, 0, baos)
-                                val data = baos.toByteArray() // bytes of the PNG
-
-                                // Uploads png to firestore object storage
-                                val reference = Firebase.storage.reference
-                                val fileReference =
-                                    reference.child("${user!!.uid}/${vm.currentFileName}.png")
-                                val uploadTask = fileReference.putBytes(data)
-                                uploadTask
-                                    .addOnFailureListener { e ->
-                                        Log.e("PICUPLOAD", "Failed !$e")
-                                    }
-                                    .addOnSuccessListener {
-                                        Log.e("PICUPLOAD", "Success!")
-                                        Toast.makeText(
-                                            requireContext(),
-                                            "Drawing Uploaded!",
-                                            Toast.LENGTH_SHORT
-                                        ).show()
-                                    }
-                                db.collection("users/").document(user!!.uid)
-                                    .set(document)
-                                    .addOnSuccessListener { Log.e("UPLOAD", "SUCCESSFUL!") }
-                                    .addOnFailureListener { e -> Log.e("UPLOAD", "FAILED!: $e") }
+                                saveDrawingToFirebase(vm, user, db)
                             }) {
                                 Text("Upload to Cloud")
                             }
 
                             Row {
                                 // TODO - uncomment when code works
-                                DisplayCloudDrawings(user!!, vm)
+                                DisplayCloudDrawings(user!!, vm, db)
                             }
                             Row {
                                 Button(onClick = {
@@ -294,55 +261,101 @@ class CloudSavingScreen : Fragment() {
         return view
     }
 
+    private fun saveDrawingToFirebase(vm: MyViewModel, user: FirebaseUser?, db: FirebaseFirestore) {
+        val document = mapOf(
+            "My uid" to user!!.uid,
+            "time" to Date(),
+            "filename" to vm.currentFileName,
+            "drawing" to vm.getImageFromFilename(
+                vm.currentFileName,
+                requireContext()
+            )
+        )
+        // converts bitmap into png
+        val baos = ByteArrayOutputStream()
+        vm.bitmap.value!!.compress(Bitmap.CompressFormat.PNG, 0, baos)
+        val data = baos.toByteArray() // bytes of the PNG
+
+        // Uploads png to firestore object storage
+        val reference = Firebase.storage.reference
+        val fileReference =
+            reference.child("${user!!.uid}/${vm.currentFileName}.png")
+        val uploadTask = fileReference.putBytes(data)
+        uploadTask
+            .addOnFailureListener { e ->
+                Log.e("PICUPLOAD", "Failed !$e")
+            }
+            .addOnSuccessListener {
+                Log.e("PICUPLOAD", "Success!")
+                Toast.makeText(
+                    requireContext(),
+                    "Drawing Uploaded!",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+        db.collection("users/").document(user!!.uid)
+            .set(document)
+            .addOnSuccessListener { Log.e("UPLOAD", "SUCCESSFUL!") }
+            .addOnFailureListener { e -> Log.e("UPLOAD", "FAILED!: $e") }
+    }
+
     /**
-     * Defines the lazy gird for displaying images in the firebase storage.
+     * Defines the lazy grid for displaying images in the firebase storage.
      * Should look similar to the art gallery gird.
      */
     @Composable
-    private fun DisplayCloudDrawings(user: FirebaseUser, vm: MyViewModel) {
+    private fun DisplayCloudDrawings(user: FirebaseUser, vm: MyViewModel, db: FirebaseFirestore) {
         //download and show the image saved in firestore if possible
         var downloadedBitmap by remember { mutableStateOf<Bitmap?>(null) }
         val ref = Firebase.storage.reference
-        val fileRef = ref.child(user.uid)
         var imageList = mutableListOf(downloadedBitmap)
 
-        fileRef.listAll()
+        ref.listAll()
             .addOnSuccessListener { (items, prefixes) ->
                 for (prefix in prefixes) {
                     // TODO - fill-in
+                    // For now, ignore
                 }
 
                 for (item in items) {
                     item.getBytes(10 * 1024 * 1024).addOnSuccessListener { bytes ->
-                        downloadedBitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.size)
+                        imageList.add(BitmapFactory.decodeByteArray(bytes, 0, bytes.size))
                     }
-                    imageList.add(downloadedBitmap)
                 }
             }
             .addOnFailureListener {
                 Log.e("CLOUD ERROR", "Unable to list all file references")
             }
 
-        // TODO - imageList is currently [null]
-        for (drawing in imageList) {
-            if (drawing != null) {
-                Image(bitmap = drawing!!.asImageBitmap(), "Downloaded image")
+        if (imageList.isNotEmpty()) {
+            // TODO - imageList is currently [null]
+            for (drawing in imageList) {
+                if (drawing != null) {
+                    Image(bitmap = drawing!!.asImageBitmap(), "Downloaded image")
+                }
             }
+
+
+            val gridState = rememberLazyStaggeredGridState()
+            LazyVerticalStaggeredGrid(
+                columns = StaggeredGridCells.Fixed(2),
+                modifier = Modifier.fillMaxSize(),
+                state = gridState,
+                horizontalArrangement = Arrangement.spacedBy(0.dp),
+                content = {
+                    items(imageList.size) {
+                        Log.i("MATTHEW", "imageList: $imageList")
+                        Log.i("MATTHEW", "it: $it")
+                        if (imageList[it] != null) {
+                            DisplayImage(imageList[it]!!)
+                        }
+
+                    }
+                }
+            )
         }
 
 
-        val gridState = rememberLazyStaggeredGridState()
-        LazyVerticalStaggeredGrid(
-            columns = StaggeredGridCells.Fixed(2),
-            modifier = Modifier.fillMaxSize(),
-            state = gridState,
-            horizontalArrangement = Arrangement.spacedBy(0.dp),
-            content = {
-                items(imageList.size) {
-                    DisplayImage(imageList[it]!!)
-                }
-            }
-        )
     }
 
     /**
