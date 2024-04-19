@@ -36,9 +36,12 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.snapshots.SnapshotStateList
+import androidx.compose.runtime.toMutableStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -272,31 +275,51 @@ class CloudSavingScreen : Fragment() {
             )
         )
         // converts bitmap into png
-        val baos = ByteArrayOutputStream()
-        vm.bitmap.value!!.compress(Bitmap.CompressFormat.PNG, 0, baos)
-        val data = baos.toByteArray() // bytes of the PNG
+        val temp = ByteArrayOutputStream()
+        vm.bitmap.value!!.compress(Bitmap.CompressFormat.PNG, 0, temp)
+        val data = temp.toByteArray() // bytes of the PNG
 
-        // Uploads png to firestore object storage
+        // Uploads png to Firestore object storage
         val reference = Firebase.storage.reference
         val fileReference =
-            reference.child("${user!!.uid}/${vm.currentFileName}.png")
+            reference.child("${vm.currentFileName}.png")
         val uploadTask = fileReference.putBytes(data)
         uploadTask
             .addOnFailureListener { e ->
-                Log.e("PICUPLOAD", "Failed !$e")
+                Log.e("Pic Upload", "Failed!  $e")
             }
             .addOnSuccessListener {
-                Log.e("PICUPLOAD", "Success!")
+                Log.e("Pic Upload", "Success!")
                 Toast.makeText(
                     requireContext(),
                     "Drawing Uploaded!",
                     Toast.LENGTH_SHORT
                 ).show()
             }
-        db.collection("users/").document(user!!.uid)
+        db.document(user.uid)
             .set(document)
             .addOnSuccessListener { Log.e("UPLOAD", "SUCCESSFUL!") }
             .addOnFailureListener { e -> Log.e("UPLOAD", "FAILED!: $e") }
+    }
+
+    private fun getAllDrawingsFromFirebase(vm: MyViewModel, user: FirebaseUser?, db: FirebaseFirestore): SnapshotStateList<Bitmap> {
+        val imageList = mutableStateListOf<Bitmap>()
+        val ref = Firebase.storage.reference
+
+        ref.listAll()
+            .addOnSuccessListener { (items, _) ->
+                for (item in items) {
+                    item.getBytes(10 * 1024 * 1024).addOnSuccessListener { bytes ->
+                        imageList.add(BitmapFactory.decodeByteArray(bytes, 0, bytes.size))
+                    }
+                    Log.d("Get Image", "Loaded another bitmap!");
+                }
+            }
+            .addOnFailureListener {
+                Log.e("CLOUD ERROR", "Unable to list all file references")
+            }
+
+        return imageList
     }
 
     /**
@@ -305,56 +328,28 @@ class CloudSavingScreen : Fragment() {
      */
     @Composable
     private fun DisplayCloudDrawings(user: FirebaseUser, vm: MyViewModel, db: FirebaseFirestore) {
-        //download and show the image saved in firestore if possible
-        var downloadedBitmap by remember { mutableStateOf<Bitmap?>(null) }
-        val ref = Firebase.storage.reference
-        var imageList = mutableListOf(downloadedBitmap)
 
-        ref.listAll()
-            .addOnSuccessListener { (items, prefixes) ->
-                for (prefix in prefixes) {
-                    // TODO - fill-in
-                    // For now, ignore
-                }
+        val imageList = getAllDrawingsFromFirebase(vm, user, db).toMutableStateList()
 
-                for (item in items) {
-                    item.getBytes(10 * 1024 * 1024).addOnSuccessListener { bytes ->
-                        imageList.add(BitmapFactory.decodeByteArray(bytes, 0, bytes.size))
-                    }
-                }
-            }
-            .addOnFailureListener {
-                Log.e("CLOUD ERROR", "Unable to list all file references")
-            }
-
-        if (imageList.isNotEmpty()) {
-            // TODO - imageList is currently [null]
-            for (drawing in imageList) {
-                if (drawing != null) {
-                    Image(bitmap = drawing!!.asImageBitmap(), "Downloaded image")
-                }
-            }
-
-
-            val gridState = rememberLazyStaggeredGridState()
-            LazyVerticalStaggeredGrid(
-                columns = StaggeredGridCells.Fixed(2),
-                modifier = Modifier.fillMaxSize(),
-                state = gridState,
-                horizontalArrangement = Arrangement.spacedBy(0.dp),
-                content = {
-                    items(imageList.size) {
-                        Log.i("MATTHEW", "imageList: $imageList")
-                        Log.i("MATTHEW", "it: $it")
-                        if (imageList[it] != null) {
-                            DisplayImage(imageList[it]!!)
-                        }
-
-                    }
-                }
-            )
+        for (drawing in imageList) {
+            Image(bitmap = drawing.asImageBitmap(), "Downloaded image")
         }
 
+        val gridState = rememberLazyStaggeredGridState()
+        LazyVerticalStaggeredGrid(
+            columns = StaggeredGridCells.Fixed(2),
+            modifier = Modifier.fillMaxSize(),
+            state = gridState,
+            horizontalArrangement = Arrangement.spacedBy(0.dp),
+            content = {
+                items(imageList.size) {
+                    Log.i("Debug", "imageList: $imageList")
+                    Log.i("Debug", "it: $it")
+                    DisplayImage(imageList[it])
+
+                }
+            }
+        )
 
     }
 
