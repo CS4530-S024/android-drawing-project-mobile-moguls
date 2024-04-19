@@ -31,4 +31,13 @@
     <string name="blur">Blur</string>
     <string name="invert">Invert</string>
     <string name="new_drawing">New Drawing</string>
+    <string name="mobile_mogul_s">Mobile Mogul\'s</string>
+    <string name="tycoons_of_devices">tycoons of devices</string>
+    <string name="canvas_matt">canvas matt</string>
+    <string name="drawing_1">drawing_1</string>
+    <string name="drawing_2">drawing_1</string>
+    <string name="drawing_3">drawing_1</string>
+    <string name="drawing_4">drawing_1</string>
+    <string name="drawing_5">drawing_1</string>
+    <string name="mobile_app_programming">mobile app programming</string>
 </resources>
