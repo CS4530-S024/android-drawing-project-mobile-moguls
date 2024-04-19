@@ -60,6 +60,8 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.auth
 import com.google.firebase.firestore.firestore
+import com.google.firebase.storage.component1
+import com.google.firebase.storage.component2
 import com.google.firebase.storage.storage
 import java.io.ByteArrayOutputStream
 import java.util.Date
@@ -274,7 +276,7 @@ class CloudSavingScreen : Fragment() {
 
                             Row {
                                 // TODO - uncomment when code works
-                                //  DisplayCloudDrawings(user!!, vm)
+                                DisplayCloudDrawings(user!!, vm)
                             }
                             Row {
                                 Button(onClick = {
@@ -298,38 +300,37 @@ class CloudSavingScreen : Fragment() {
      */
     @Composable
     private fun DisplayCloudDrawings(user: FirebaseUser, vm: MyViewModel) {
-        // download and show the image saved in fire-store if possible
+        //download and show the image saved in firestore if possible
         var downloadedBitmap by remember { mutableStateOf<Bitmap?>(null) }
         val ref = Firebase.storage.reference
-        val fileRef = ref.child("${user.uid}/${vm.currentFileName}.png")
-        fileRef.getBytes(10 * 1024 * 1024).addOnSuccessListener { bytes ->
-            downloadedBitmap =
-                BitmapFactory.decodeByteArray(bytes, 0, bytes.size)
-        }
-            .addOnFailureListener { e ->
-                Log.e(
-                    "DOWNLOAD_IMAGE",
-                    "Failed to get image $e"
-                )
+        val fileRef = ref.child(user.uid)
+        var imageList = mutableListOf(downloadedBitmap)
+
+        fileRef.listAll()
+            .addOnSuccessListener { (items, prefixes) ->
+                for (prefix in prefixes) {
+                    // TODO - fill-in
+                }
+
+                for (item in items) {
+                    item.getBytes(10 * 1024 * 1024).addOnSuccessListener { bytes ->
+                        downloadedBitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.size)
+                    }
+                    imageList.add(downloadedBitmap)
+                }
             }
-            .addOnSuccessListener { e ->
-                Log.e(
-                    "DOWNLOAD_IMAGE",
-                    "Successfully got images"
-                )
+            .addOnFailureListener {
+                Log.e("CLOUD ERROR", "Unable to list all file references")
             }
-        if (downloadedBitmap != null) {
-            Log.e("DOWNLOAD_IMAGE", "image downloaded")
-            Image(
-                bitmap = downloadedBitmap!!.asImageBitmap(),
-                "Downloaded image"
-            )
+
+        // TODO - imageList is currently [null]
+        for (drawing in imageList) {
+            if (drawing != null) {
+                Image(bitmap = drawing!!.asImageBitmap(), "Downloaded image")
+            }
         }
 
-        if (downloadedBitmap == null) {
-            Log.e("DOWNLOAD_IMAGE", "downloaded image is: $downloadedBitmap")
-        }
-        val cloudDrawingsList = listOf(downloadedBitmap)
+
         val gridState = rememberLazyStaggeredGridState()
         LazyVerticalStaggeredGrid(
             columns = StaggeredGridCells.Fixed(2),
@@ -337,8 +338,8 @@ class CloudSavingScreen : Fragment() {
             state = gridState,
             horizontalArrangement = Arrangement.spacedBy(0.dp),
             content = {
-                items(cloudDrawingsList.size) {
-                    //  DisplayImage(cloudDrawingsList[it]!!)
+                items(imageList.size) {
+                    DisplayImage(imageList[it]!!)
                 }
             }
         )
@@ -357,14 +358,13 @@ class CloudSavingScreen : Fragment() {
             OutlinedButton(onClick = {
                 // vm.currentFileName = data.fileName
                 // vm.setBitmapImage(drawingImage)
-                // findNavController().navigate(R.id.action_artGalleryScreen_to_drawScreen2)
             }, shape = RoundedCornerShape(0),
                 border = BorderStroke(0.dp, Color.White),
                 modifier = Modifier
                     .padding(0.dp)
                     .wrapContentSize(),
                 content = {
-                    // DisplayCard(modifier, image)
+                    DisplayCard(modifier, image)
                 }) // End button
 
         }
