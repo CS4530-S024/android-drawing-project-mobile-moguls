@@ -40,8 +40,6 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.runtime.snapshots.SnapshotStateList
-import androidx.compose.runtime.toMutableStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -64,8 +62,6 @@ import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.auth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.firestore
-import com.google.firebase.storage.component1
-import com.google.firebase.storage.component2
 import com.google.firebase.storage.storage
 import java.io.ByteArrayOutputStream
 import java.util.Date
@@ -82,8 +78,7 @@ import java.util.Date
  */
 class CloudSavingScreen : Fragment() {
     private lateinit var auth: FirebaseAuth
-    val vm: MyViewModel by activityViewModels()
-    private var queriedForImages = false;
+    private val vm: MyViewModel by activityViewModels()
 
 
     /**
