@@ -266,6 +266,10 @@ class CloudSavingScreen : Fragment() {
     }
 
     private fun saveDrawingToFirebase(vm: MyViewModel, user: FirebaseUser?, db: FirebaseFirestore) {
+        if (vm.currentFileName.isEmpty()) {
+            return
+        }
+
         val document = mapOf(
             "author-uid" to user!!.uid,
             "upload-time" to Date(),
