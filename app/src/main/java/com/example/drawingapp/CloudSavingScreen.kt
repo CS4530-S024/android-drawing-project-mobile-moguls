@@ -83,6 +83,7 @@ import java.util.Date
 class CloudSavingScreen : Fragment() {
     private lateinit var auth: FirebaseAuth
     val vm: MyViewModel by activityViewModels()
+    private var queriedForImages = false;
 
 
     /**
@@ -205,7 +206,7 @@ class CloudSavingScreen : Fragment() {
 
                             Row {
                                 Text(
-                                    text = "${user!!.email}'s Cloud",
+                                    text = "Images on The Cloud",
                                     style = TextStyle(
                                         fontSize = 24.sp,
                                         textAlign = TextAlign.Center
@@ -221,7 +222,7 @@ class CloudSavingScreen : Fragment() {
                             // probably bad to do this in a composable
                             // grab a document from a public folder on firebase
                             val db = Firebase.firestore
-                            val collection = db.collection("demoCollection")
+                            val collection = db.collection("file-metadata")
                             collection
                                 .get()
                                 .addOnSuccessListener { result ->
@@ -246,8 +247,7 @@ class CloudSavingScreen : Fragment() {
                             }
 
                             Row {
-                                // TODO - uncomment when code works
-                                DisplayCloudDrawings(user!!, vm, db)
+                                DisplayCloudDrawings(db)
                             }
                             Row {
                                 Button(onClick = {
@@ -267,13 +267,9 @@ class CloudSavingScreen : Fragment() {
 
     private fun saveDrawingToFirebase(vm: MyViewModel, user: FirebaseUser?, db: FirebaseFirestore) {
         val document = mapOf(
-            "My uid" to user!!.uid,
-            "time" to Date(),
-            "filename" to vm.currentFileName,
-            "drawing" to vm.getImageFromFilename(
-                vm.currentFileName,
-                requireContext()
-            )
+            "author-uid" to user!!.uid,
+            "upload-time" to Date(),
+            "filename" to vm.currentFileName
         )
         // converts bitmap into png
         val temp = ByteArrayOutputStream()
@@ -290,35 +286,53 @@ class CloudSavingScreen : Fragment() {
                 Log.e("Pic Upload", "Failed!  $e")
             }
             .addOnSuccessListener {
-                Log.e("Pic Upload", "Success!")
+                Log.i("Pic Upload", "Success!")
                 Toast.makeText(
                     requireContext(),
                     "Drawing Uploaded!",
                     Toast.LENGTH_SHORT
                 ).show()
             }
-        db.document(user.uid)
+        db.collection("file-metadata").document(vm.currentFileName)
             .set(document)
-            .addOnSuccessListener { Log.e("UPLOAD", "SUCCESSFUL!") }
+            .addOnSuccessListener { Log.i("UPLOAD", "SUCCESSFUL!") }
             .addOnFailureListener { e -> Log.e("UPLOAD", "FAILED!: $e") }
     }
 
-    private fun getAllDrawingsFromFirebase(vm: MyViewModel, user: FirebaseUser?, db: FirebaseFirestore): SnapshotStateList<Bitmap> {
-        val imageList = mutableStateListOf<Bitmap>()
+    private fun getAllDrawingsFromFirebase(db: FirebaseFirestore): MutableList<Bitmap> {
+        var imageList = mutableStateListOf<Bitmap>()
         val ref = Firebase.storage.reference
+        Log.i("GetFiles", "Starting to get all drawings!");
 
-        ref.listAll()
-            .addOnSuccessListener { (items, _) ->
-                for (item in items) {
-                    item.getBytes(10 * 1024 * 1024).addOnSuccessListener { bytes ->
-                        imageList.add(BitmapFactory.decodeByteArray(bytes, 0, bytes.size))
-                    }
-                    Log.d("Get Image", "Loaded another bitmap!");
+        val filesMetadataColl = db.collection("file-metadata")
+        val filesToPull = mutableListOf<String>();
+        filesMetadataColl.get()
+            .addOnSuccessListener { it1 ->
+                Log.i("GetFiles", "Got the files metadata collection!");
+                it1.documents.forEach {
+                    Log.i("GetFiles", "Loaded file document for ${it.get("filename").toString()}")
+                    filesToPull.add(it.get("filename").toString())
+                }
+
+                Log.i("GetFiles", filesToPull.toString());
+
+                filesToPull.forEach { file ->
+                    Log.i("GetFiles", "Looking to pull data for file: $file")
+                    val fileRef = ref.child("/$file.png")
+                    fileRef.getBytes(10 * 1024 * 1024)
+                        .addOnSuccessListener { bytes ->
+                            Log.d("GetFiles", "Loaded another bitmap! ($file)");
+                            imageList.add(BitmapFactory.decodeByteArray(bytes, 0, bytes.size))
+                        }
+                        .addOnFailureListener {
+                            Log.e("GetFiles", "Unable to load file data for $file")
+                        }
                 }
             }
-            .addOnFailureListener {
-                Log.e("CLOUD ERROR", "Unable to list all file references")
-            }
+
+
+
+        Log.i("GetFiles", "Returning imageList of size ${imageList.size}");
 
         return imageList
     }
@@ -328,13 +342,9 @@ class CloudSavingScreen : Fragment() {
      * Should look similar to the art gallery gird.
      */
     @Composable
-    private fun DisplayCloudDrawings(user: FirebaseUser, vm: MyViewModel, db: FirebaseFirestore) {
-
-        val imageList = getAllDrawingsFromFirebase(vm, user, db).toMutableStateList()
-
-        for (drawing in imageList) {
-            Image(bitmap = drawing.asImageBitmap(), "Downloaded image")
-        }
+    private fun DisplayCloudDrawings(db: FirebaseFirestore) {
+        Log.i("RECOMPOSE", "Deciding to recompose the saving screen")
+        val imageList = remember { getAllDrawingsFromFirebase(db) }
 
         val gridState = rememberLazyStaggeredGridState()
         LazyVerticalStaggeredGrid(
