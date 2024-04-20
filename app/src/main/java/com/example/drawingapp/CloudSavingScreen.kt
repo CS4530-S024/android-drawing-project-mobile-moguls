@@ -82,6 +82,8 @@ import java.util.Date
  */
 class CloudSavingScreen : Fragment() {
     private lateinit var auth: FirebaseAuth
+    val vm: MyViewModel by activityViewModels()
+
 
     /**
      * Defines what the view will look like at creation.
@@ -94,7 +96,6 @@ class CloudSavingScreen : Fragment() {
         auth = Firebase.auth
         val view = inflater.inflate(R.layout.fragment_art_gallery_screen, container, false)
         val composeView = view.findViewById<ComposeView>(R.id.compose_view)
-        val vm: MyViewModel by activityViewModels()
         composeView.apply {
             setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
             setContent {
