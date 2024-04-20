@@ -47,4 +47,21 @@ class EspressoTests {
         onView(withId(R.id.mainScreenButton)).perform(click())
         onView(withId(R.id.splashTitle)).check(doesNotExist())
     }
+
+    @Test
+    fun testSplashScreenToCloudScreen() {
+        onView(withId(R.id.splashTitle)).check(matches(isDisplayed()))
+        onView(withId(R.id.mainScreenButton)).perform(click())
+        onView(withId(R.id.splashTitle)).check(doesNotExist())
+        onView(withText("See Cloud")).perform(click())
+        onView(withText("See Cloud")).check(doesNotExist())
+    }
+
+    @Test
+    fun testCloudScreenBackButton() {
+        onView(withId(R.id.splashTitle)).check(matches(isDisplayed()))
+        onView(withId(R.id.mainScreenButton)).perform(click())
+        onView(withText("See Cloud")).perform(click())
+        onView(withId(R.id.cloudStorageButton)).check(matches(isDisplayed()))
+    }
 }
