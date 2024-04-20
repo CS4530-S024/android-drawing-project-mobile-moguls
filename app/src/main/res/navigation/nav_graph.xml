@@ -60,6 +60,9 @@
         <action
             android:id="@+id/action_artGalleryScreen_to_splashScreen"
             app:destination="@id/splashScreen" />
+        <action
+            android:id="@+id/action_artGalleryScreen_to_CloudSavingScreen"
+            app:destination="@id/cloudSavingScreen" />
     </fragment>
     <fragment
         android:id="@+id/cloudSavingScreen"

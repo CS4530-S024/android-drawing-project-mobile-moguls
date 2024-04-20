@@ -125,7 +125,14 @@ class ArtGalleryScreen : Fragment() {
         ) {
             Text(text = "Back to Menu")
         }
-        Spacer(modifier = Modifier.padding(64.dp))
+
+        OutlinedButton(onClick = {
+            Log.d("NAV", "navigating to draw screen")
+            findNavController().navigate(R.id.action_artGalleryScreen_to_CloudSavingScreen)
+        }
+        ) {
+            Text(text = "See Cloud")
+        }
         OutlinedButton(onClick = {
             Log.d("NAV", "navigating to draw screen")
             findNavController().navigate(R.id.action_artGalleryScreen_to_drawScreen2)

@@ -55,12 +55,9 @@ static int rgb_clamp(int value) {
 
 static void apply_image_transform(AndroidBitmapInfo* info, void* pixels, uint32_t* newVals, int newValsSize) {
     int w = info->width - 4;
-    int h = info->height - 4;
     for (int i = 0; i < newValsSize; i++) {
         int x = (i % w) + 2;
         int y = (i / w) + 2;
-        x += 2;
-        y += 2;
         *GET_PIXEL_PTR(info, pixels, x, y) = newVals[i];
     }
 }
@@ -117,28 +114,12 @@ static int32_t invert_pixel_val(AndroidBitmapInfo* info, void* pixels, int x, in
     green = 0;
     blue = 0;
     alpha = 0;
-    for (int yy = y-2; yy < y+2; yy++) {
-        for (int xx = x-2; xx < x+2; xx++) {
 
-            uint32_t p = *GET_PIXEL_PTR(info, pixels, xx, yy);
-            if (p >> 24 < 100) {
-                alpha = 255;
-                red = 255;
-                green = 255;
-                blue = 255;
-            } else {
-                alpha = (int) (p >> 24);
-                red = (int) ((p & 0x00FF0000) >> 16);
-                green = (int)((p & 0x0000FF00) >> 8);
-                blue = (int) (p & 0x00000FF );
-            }
-        }
-    }
-
-    // If the values of any of the colors exceed 255, then they are set to 255.
-    if (red > 255) red = 255;
-    if (green > 255) green = 255;
-    if (blue > 255) blue = 255;
+    uint32_t p = *GET_PIXEL_PTR(info, pixels, x, y);
+    alpha = (int) (p >> 24);
+    red = (int) ((p & 0x00FF0000) >> 16);
+    green = (int)((p & 0x0000FF00) >> 8);
+    blue = (int) (p & 0x00000FF );
 
     // Returns the pixel values subtracted from 255 to get the inversion of each pixel's value.
     return pack_rgba(255 - red, 255 - green, 255 - blue, alpha);
@@ -146,7 +127,6 @@ static int32_t invert_pixel_val(AndroidBitmapInfo* info, void* pixels, int x, in
 
 
 static void doActualBlur(AndroidBitmapInfo* info, void* pixels) {
-    int red, green, blue;
     int w = info->width - 4;
     int h = info->height - 4;
     int newValsSize = w * h;
@@ -173,7 +153,6 @@ static void doActualBlur(AndroidBitmapInfo* info, void* pixels) {
  * @param pixels
  */
 static void doActualInvert(AndroidBitmapInfo* info, void* pixels){
-    int red, green, blue;
     int w = info->width - 4;
     int h = info->height - 4;
     int newValsSize = w * h;
